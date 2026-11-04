@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flast — твой ИИ-компаньон</title>
+    <meta name="description" content="Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <style>
+      :root { --x-bg: #0c0c0d; --x-ink: #f5f5f4; --x-dim: #9b9b9f; --x-line: rgba(255,255,255,.12); --x-card: #141416; --x-display: "Anton", "Archivo Black", "Arial Black", Impact, sans-serif; --x-mono: "Space Mono", "Geist Mono", ui-monospace, monospace; }
+      html, body { background: var(--x-bg); color: var(--x-ink); color-scheme: dark; }
+      body { font-family: "Geist", system-ui, sans-serif; }
+      .x-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; background-color: var(--x-bg);
+        background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        background-size: 48px 48px; }
+      .x-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, transparent 0%, var(--x-bg) 75%); }
+      .x-wrap { display: grid; gap: clamp(72px, 12vw, 140px); padding-block: 8px 24px; }
+
+      .x-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 8px; }
+      .x-logo { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; min-height: var(--tap); }
+      .x-tile { width: 44px; height: 44px; border-radius: 12px; background: #1b1b1e; border: 1px solid var(--x-line); display: grid; place-items: center; flex: none; }
+      .x-tile i { display: block; width: 18px; height: 5px; border-radius: 3px; background: #fff; }
+      .x-word { display: grid; line-height: 1.05; }
+      .x-word b { font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+      .x-word small { font-size: 12px; color: var(--x-dim); }
+      .x-toplink { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); text-decoration: none; letter-spacing: .06em; text-transform: uppercase; min-height: var(--tap); display: inline-flex; align-items: center; }
+      .x-toplink:hover { color: var(--x-ink); }
+
+      .x-hero { display: grid; gap: 28px; justify-items: start; padding-top: clamp(24px, 8vw, 80px); }
+      .x-live { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.35); border-radius: var(--r-pill); padding: 6px 14px; font-family: var(--x-mono); font-size: 12px; letter-spacing: .14em; }
+      .x-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--fill-system-green, #34c759); box-shadow: 0 0 0 4px rgba(52,199,89,.18); }
+      .x-h1, .x-h2, .x-big { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; letter-spacing: .005em; margin: 0; }
+      .x-h1 { font-size: clamp(52px, 13vw, 150px); }
+      .x-h1 span { display: block; }
+      .x-key { display: inline-block; background: #fff; color: var(--x-bg); border-radius: .22em; padding: .02em .2em .04em; margin-top: .06em; }
+      .x-lead { font-size: clamp(17px, 2.4vw, 21px); line-height: 1.5; color: #cfcfd2; max-width: 34em; margin: 0; }
+      .x-btn { display: inline-flex; align-items: center; gap: 12px; background: #fff; color: var(--x-bg); border-radius: var(--r-pill); padding: 18px 34px; min-height: 60px; font-weight: 800; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: transform var(--dur-quick, .15s) var(--ease-out, ease), box-shadow var(--dur-quick, .15s); }
+      .x-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(255,255,255,.18); }
+      .x-btn:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+      .x-mono { font-family: var(--x-mono); font-size: 13px; color: var(--x-dim); letter-spacing: .08em; margin: 0; }
+
+      .x-sec { display: grid; gap: 32px; scroll-margin-top: 24px; }
+      .x-eyebrow { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 12px; }
+      .x-h2 { font-size: clamp(38px, 7vw, 76px); }
+      .x-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+      .x-card { background: var(--x-card); border: 1px solid var(--x-line); border-radius: var(--r-l); padding: 28px; display: grid; gap: 12px; align-content: start; transition: border-color var(--dur-quick, .15s); }
+      .x-card:hover { border-color: rgba(255,255,255,.3); }
+      .x-card h3 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+      .x-card p { margin: 0; color: #bdbdc1; font-size: 16px; line-height: 1.55; }
+      .x-ico { width: 44px; height: 44px; border-radius: 12px; background: #fff; color: var(--x-bg); display: grid; place-items: center; font-family: var(--x-mono); font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+      .x-model .x-spec { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .08em; text-transform: uppercase; }
+      .x-model ul { list-style: none; margin: 8px 0 0; padding: 16px 0 0; border-top: 1px solid var(--x-line); display: grid; gap: 8px; }
+      .x-model li { display: flex; gap: 10px; color: #d6d6d9; font-size: 15px; line-height: 1.45; }
+      .x-model li::before { content: ""; flex: none; width: 10px; height: 3px; border-radius: 2px; background: #fff; margin-top: .62em; }
+
+      .x-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+      .x-steps li { border-top: 1px solid rgba(255,255,255,.35); padding-top: 20px; display: grid; gap: 12px; }
+      .x-num { font-family: var(--x-display); font-size: clamp(72px, 12vw, 120px); line-height: .9; color: transparent; -webkit-text-stroke: 1.5px #fff; }
+      .x-steps p { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.35; }
+
+      .x-check { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--x-line); }
+      .x-check li { display: flex; align-items: center; gap: 16px; padding: 18px 4px; border-bottom: 1px solid var(--x-line); font-size: 18px; }
+      .x-check li::before { content: "✓"; flex: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--x-bg); display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+      .x-check li::first-letter { text-transform: uppercase; }
+
+      .x-cta { border: 1px solid var(--x-line); border-radius: var(--r-xl); padding: clamp(40px, 8vw, 88px) clamp(24px, 6vw, 64px); display: grid; gap: 32px; justify-items: center; text-align: center;
+        background: radial-gradient(ellipse at 50% 120%, rgba(255,255,255,.12), transparent 60%), var(--x-card); }
+      .x-big { font-size: clamp(54px, 12vw, 140px); }
+
+      .x-foot { border-top: 1px solid var(--x-line); padding-top: 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+      .x-foot .x-mail { font-family: var(--x-mono); font-size: 14px; color: var(--x-ink); text-decoration: none; letter-spacing: .08em; min-height: var(--tap); display: inline-flex; align-items: center; }
+      .x-foot p { margin: 0; color: var(--x-dim); font-size: 13px; }
+      button.x-btn { border: 0; cursor: pointer; font-family: inherit; }
+
+      /* Application modal */
+      .x-modal { width: min(100% - 2 * var(--gutter), 520px); max-width: none; max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--x-line); border-radius: var(--r-xl); background: var(--x-card); color: var(--x-ink); overflow: auto; overscroll-behavior: contain; }
+      .x-modal::backdrop { background: rgba(0,0,0,.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+      .x-modal__in { position: relative; display: grid; gap: 20px; padding: clamp(28px, 6vw, 44px); }
+      .x-modal h2 { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; font-size: clamp(34px, 8vw, 52px); margin: 0; padding-right: 48px; }
+      .x-modal p { margin: 0; color: #cfcfd2; font-size: 16px; line-height: 1.5; }
+      .x-close { position: absolute; top: 12px; right: 12px; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--x-line); background: transparent; color: var(--x-ink); font-size: 26px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+      .x-close:hover { border-color: rgba(255,255,255,.4); }
+      .x-form { display: grid; gap: 16px; }
+      .x-field { display: grid; gap: 8px; }
+      .x-field span { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .1em; text-transform: uppercase; }
+      .x-field input, .x-field textarea { width: 100%; box-sizing: border-box; min-height: 56px; padding: 14px 18px; border-radius: var(--r-s); border: 1px solid var(--x-line); background: var(--x-bg); color: var(--x-ink); font: 16px/1.4 "Geist", system-ui, sans-serif; }
+      .x-field textarea { min-height: 104px; resize: vertical; }
+      .x-field input:focus, .x-field textarea:focus { outline: none; border-color: #fff; }
+      .x-field input[aria-invalid="true"] { border-color: var(--fill-system-red, #ff453a); }
+      .x-err { color: var(--fill-system-red, #ff6b60) !important; font-size: 14px !important; min-height: 0; }
+      .x-err:empty { display: none; }
+      .x-form .x-btn, .x-done .x-btn { justify-content: center; width: 100%; box-sizing: border-box; }
+      .x-done { display: grid; gap: 12px; }
+      .x-textbtn { min-height: 56px; background: none; border: 0; color: var(--x-dim); font: 500 15px "Geist", system-ui, sans-serif; letter-spacing: .04em; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+      .x-textbtn:hover { color: var(--x-ink); }
+      body.x-locked { overflow: hidden; }
+      .x-modal h2:focus { outline: none; }
+      .x-step-form[hidden], .x-step-done[hidden] { display: none; }
+
+      /* Header user */
+      .x-topr { display: flex; align-items: center; gap: 8px 16px; min-width: 0; }
+      .x-user { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+      .x-user[hidden] { display: none; }
+      .x-uname { display: inline-block; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid rgba(255,255,255,.35); border-radius: var(--r-pill); padding: 6px 12px; font-family: var(--x-mono); font-size: 12px; letter-spacing: .06em; }
+      .x-user .x-textbtn { padding: 0 8px; min-height: 48px; font-size: 14px; }
+      .x-hint { margin: -12px 0 0; color: var(--x-dim); font-size: 14px; }
+      .x-hint[hidden] { display: none; }
+
+      /* Studio */
+      #app[hidden], .x-panel[hidden], .x-studio[hidden], .x-prog[hidden], .x-result[hidden], .x-prev[hidden] { display: none; }
+      .x-studio { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+      .x-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+      .x-tab { min-height: 48px; padding: 0 26px; border-radius: var(--r-pill); border: 1px solid rgba(255,255,255,.35); background: transparent; color: var(--x-ink); font: 800 15px "Geist", system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+      .x-tab:hover { border-color: #fff; }
+      .x-tab[aria-selected="true"] { background: #fff; color: var(--x-bg); border-color: #fff; }
+      .x-tab:focus-visible, .x-chip:focus-visible, .x-file:focus-within { outline: 2px solid #fff; outline-offset: 3px; }
+      .x-panel { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); background: var(--x-card); border: 1px solid var(--x-line); border-radius: var(--r-l); padding: clamp(18px, 4vw, 28px); }
+      .x-panel .x-btn { justify-content: center; }
+      .x-msgs { display: flex; flex-direction: column; gap: 10px; min-height: 240px; max-height: 480px; overflow-y: auto; overscroll-behavior: contain; padding: 16px; border-radius: var(--r-s); background: var(--x-bg); border: 1px solid var(--x-line); }
+      .x-empty { margin: auto; color: var(--x-dim); font-size: 15px; text-align: center; }
+      .x-bubble { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .x-bubble--user { align-self: flex-end; background: #fff; color: var(--x-bg); border-bottom-right-radius: 6px; }
+      .x-bubble--bot { align-self: flex-start; background: #1b1b1e; border: 1px solid var(--x-line); color: var(--x-ink); border-bottom-left-radius: 6px; }
+      .x-bubble--typing { color: var(--x-dim); font-style: italic; }
+      .x-crow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .x-crow .x-btn { width: auto; flex: none; }
+      .x-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .x-chip { min-height: 44px; padding: 0 18px; border-radius: var(--r-pill); border: 1px solid var(--x-line); background: transparent; color: var(--x-ink); font: 400 14px var(--x-mono); cursor: pointer; }
+      .x-chip[aria-pressed="true"] { background: #fff; color: var(--x-bg); border-color: #fff; }
+      .x-file { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: var(--r-pill); border: 1px dashed rgba(255,255,255,.35); color: var(--x-ink); font-size: 15px; cursor: pointer; box-sizing: border-box; }
+      .x-file:hover { border-color: #fff; }
+      .x-file input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+      .x-prev { display: flex; align-items: center; gap: 12px; }
+      .x-prev img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--r-s); border: 1px solid var(--x-line); }
+      .x-prev span { flex: 1; min-width: 0; color: var(--x-dim); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .x-prev .x-close { position: static; width: 48px; height: 48px; font-size: 22px; flex: none; }
+      .x-prog { display: grid; gap: 8px; }
+      .x-bar { height: 8px; border-radius: 4px; background: #1b1b1e; border: 1px solid var(--x-line); overflow: hidden; }
+      .x-bar i { display: block; height: 100%; width: 0; background: #fff; transition: width .4s var(--ease-out, ease); }
+      .x-progline { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--x-dim); }
+      .x-progline b { font-family: var(--x-mono); color: var(--x-ink); font-weight: 400; }
+      .x-result { display: grid; gap: 12px; }
+      .x-result video, .x-result img { display: block; width: 100%; max-height: 70vh; object-fit: contain; border-radius: var(--r-s); background: #000; }
+      .x-result .x-btn { justify-content: center; }
+      .x-btn:disabled { opacity: .5; cursor: progress; transform: none; box-shadow: none; }
+      .x-panel .x-mono { font-size: 12px; }
+      .x-offline { color: #ff8a80; font-size: 15px; margin: 0; }
+      .x-panel .x-err { margin: 0; }
+
+      /* Phones */
+      html, body { overflow-x: clip; }
+      .x-wrap, .x-hero, .x-sec, .x-cta, .x-form, .x-done, .x-modal__in { grid-template-columns: minmax(0, 1fr); }
+      .x-hero > *, .x-cta > * { max-width: 100%; }
+      .x-modal { margin: auto; }
+      .x-modal__in { padding-bottom: max(clamp(28px, 6vw, 44px), env(safe-area-inset-bottom)); }
+      .x-h1, .x-big, .x-h2 { overflow-wrap: break-word; hyphens: manual; }
+      @media (max-width: 640px) {
+        .page { padding-inline: 20px; }
+        .x-wrap { gap: 72px; }
+        .x-top { padding-block: 4px; }
+        .x-logo, .x-toplink, .x-foot .x-mail { min-height: 56px; }
+        body.x-auth .x-toplink { display: none; }
+        body.x-auth .x-word small { display: none; }
+        .x-uname { max-width: 34vw; }
+        .x-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .x-tab { min-height: 56px; padding: 0 8px; }
+        .x-msgs { max-height: 62vh; padding: 14px; }
+        .x-bubble { max-width: 88%; }
+        .x-chip { min-height: 48px; flex: 1 0 calc(33% - 8px); }
+        .x-file { width: 100%; min-height: 56px; }
+        .x-crow { flex-direction: column-reverse; align-items: stretch; }
+        .x-crow .x-textbtn { align-self: center; }
+        .x-crow .x-btn { width: 100%; }
+        .x-toplink { padding-inline: 8px; margin-right: -8px; font-size: 13px; }
+        .x-hero { gap: 22px; padding-top: 24px; }
+        .x-h1 { font-size: clamp(38px, 12vw, 64px); line-height: .98; }
+        .x-lead { font-size: 17px; }
+        .x-btn { width: 100%; justify-content: center; box-sizing: border-box; min-height: 56px; padding: 16px 24px; font-size: 16px; }
+        .x-mono { font-size: 13px; }
+        .x-sec { gap: 24px; }
+        .x-h2 { font-size: clamp(34px, 10vw, 52px); }
+        .x-grid, .x-steps, .x-check { grid-template-columns: 1fr; }
+        .x-card { padding: 24px 22px; }
+        .x-card h3 { font-size: 21px; }
+        .x-model li { font-size: 16px; }
+        .x-num { font-size: 72px; }
+        .x-steps p { font-size: 19px; }
+        .x-check li { font-size: 17px; padding: 16px 4px; min-height: 56px; box-sizing: border-box; }
+        .x-cta { padding: 44px 22px; gap: 24px; border-radius: var(--r-l); }
+        .x-big { font-size: clamp(44px, 13vw, 72px); }
+        .x-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .x-foot p { font-size: 14px; }
+        .x-modal { width: calc(100% - 24px); border-radius: var(--r-l); }
+        .x-modal__in { padding: 28px 20px 24px; }
+      }
+      @media (max-width: 360px) { .x-h1 { font-size: 36px; } .x-big { font-size: 42px; } .x-h2 { font-size: 32px; } .page { padding-inline: 16px; } }
+      @media (prefers-reduced-motion: reduce) { .x-btn, .x-card { transition: none; } .x-btn:hover { transform: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="x-bg" aria-hidden="true"></div>
+    <div class="page" id="top">
+      <div class="x-wrap">
+        <header class="x-top">
+          <a class="x-logo" href="#top" aria-label="Flast — на главную">
+            <span class="x-tile"><i></i></span>
+            <span class="x-word"><b>Flast</b><small>ИИ-компаньон</small></span>
+          </a>
+          <div class="x-topr">
+            <div class="x-user" id="user" hidden>
+              <span class="x-uname" id="uname"></span>
+              <button class="x-textbtn" type="button" id="logout">Выйти</button>
+            </div>
+            <a class="x-toplink" href="#modeli">Нейросети →</a>
+          </div>
+        </header>
+
+        <main class="x-wrap">
+          <section class="x-hero" aria-labelledby="hero-title">
+            <span class="x-live">ОНЛАЙН</span>
+            <h1 class="x-h1" id="hero-title"><span>Твой ИИ-компаньон</span><span>уже <em class="x-key" style="font-style:normal">здесь</em></span></h1>
+            <p class="x-lead">Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
+            <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
+            <p class="x-hint" id="hint">Уже есть доступ? Открой ссылку из бота</p>
+            <p class="x-mono">[ flastai.github.io ]</p>
+          </section>
+
+          <section class="x-sec" id="app" aria-labelledby="app-title" hidden>
+            <div>
+              <p class="x-eyebrow">// студия</p>
+              <h2 class="x-h2" id="app-title">Студия Flast</h2>
+            </div>
+            <p class="x-offline" id="offline" hidden>Сервер Flast сейчас недоступен, попробуй позже</p>
+            <div class="x-studio" id="studio">
+              <div class="x-tabs" role="tablist" aria-label="Режим">
+                <button class="x-tab" type="button" role="tab" id="tab-chat" aria-controls="p-chat" aria-selected="true">Чат</button>
+                <button class="x-tab" type="button" role="tab" id="tab-video" aria-controls="p-video" aria-selected="false" tabindex="-1">Видео</button>
+                <button class="x-tab" type="button" role="tab" id="tab-photo" aria-controls="p-photo" aria-selected="false" tabindex="-1">Фото</button>
+              </div>
+
+              <div class="x-panel" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
+                <div class="x-msgs" id="msgs" role="log" aria-live="polite"><p class="x-empty">Напиши первое сообщение — Flast ответит.</p></div>
+                <form class="x-form" id="chat-form" novalidate>
+                  <label class="x-field"><span>Сообщение</span><textarea name="msg" id="chat-in" rows="3" placeholder="Спроси что угодно…"></textarea></label>
+                  <p class="x-err" id="chat-err" role="alert"></p>
+                  <div class="x-crow">
+                    <button class="x-textbtn" type="button" id="chat-new">Новый чат</button>
+                    <button class="x-btn" type="submit" id="chat-send">Отправить <span aria-hidden="true">→</span></button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="x-panel" id="p-video" role="tabpanel" aria-labelledby="tab-video" hidden>
+                <form class="x-form" data-gen="video" novalidate>
+                  <label class="x-field"><span>Опиши видео</span><textarea name="prompt" rows="4" placeholder="Например: кот в очках едет на скейте по ночному городу"></textarea></label>
+                  <div class="x-field"><span>Формат</span>
+                    <div class="x-chips" role="group" aria-label="Соотношение сторон">
+                      <button class="x-chip" type="button" data-ratio="9:16" aria-pressed="true">9:16</button>
+                      <button class="x-chip" type="button" data-ratio="16:9" aria-pressed="false">16:9</button>
+                      <button class="x-chip" type="button" data-ratio="1:1" aria-pressed="false">1:1</button>
+                      <button class="x-chip" type="button" data-ratio="4:3" aria-pressed="false">4:3</button>
+                      <button class="x-chip" type="button" data-ratio="3:4" aria-pressed="false">3:4</button>
+                    </div>
+                  </div>
+                  <div class="x-field"><span>Фото для оживления · по желанию</span>
+                    <label class="x-file">＋ Выбрать фото<input type="file" accept="image/*" /></label>
+                    <div class="x-prev" hidden><img alt="Выбранное фото" /><span></span><button class="x-close" type="button" aria-label="Убрать фото">×</button></div>
+                  </div>
+                  <p class="x-err" role="alert"></p>
+                  <button class="x-btn" type="submit">Сгенерировать видео <span aria-hidden="true">→</span></button>
+                  <p class="x-mono">6 секунд · 720p · Grok Imagine</p>
+                  <div class="x-prog" hidden aria-live="polite"><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">В очереди…</span><b>0%</b></p></div>
+                  <div class="x-result" hidden></div>
+                </form>
+              </div>
+
+              <div class="x-panel" id="p-photo" role="tabpanel" aria-labelledby="tab-photo" hidden>
+                <form class="x-form" data-gen="image" novalidate>
+                  <label class="x-field"><span>Опиши фото</span><textarea name="prompt" rows="4" placeholder="Например: неоновый Токио под дождём, кинематографичный кадр"></textarea></label>
+                  <div class="x-field"><span>Формат</span>
+                    <div class="x-chips" role="group" aria-label="Соотношение сторон">
+                      <button class="x-chip" type="button" data-ratio="9:16" aria-pressed="true">9:16</button>
+                      <button class="x-chip" type="button" data-ratio="16:9" aria-pressed="false">16:9</button>
+                      <button class="x-chip" type="button" data-ratio="1:1" aria-pressed="false">1:1</button>
+                      <button class="x-chip" type="button" data-ratio="4:3" aria-pressed="false">4:3</button>
+                      <button class="x-chip" type="button" data-ratio="3:4" aria-pressed="false">3:4</button>
+                    </div>
+                  </div>
+                  <div class="x-field"><span>Исходное фото для правки · по желанию</span>
+                    <label class="x-file">＋ Выбрать фото<input type="file" accept="image/*" /></label>
+                    <div class="x-prev" hidden><img alt="Выбранное фото" /><span></span><button class="x-close" type="button" aria-label="Убрать фото">×</button></div>
+                  </div>
+                  <p class="x-err" role="alert"></p>
+                  <button class="x-btn" type="submit">Сгенерировать фото <span aria-hidden="true">→</span></button>
+                  <p class="x-mono">Grok Imagine</p>
+                  <div class="x-prog" hidden aria-live="polite"><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">В очереди…</span><b>0%</b></p></div>
+                  <div class="x-result" hidden></div>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section class="x-sec" id="umeet" aria-labelledby="umeet-title">
+            <div>
+              <p class="x-eyebrow">// 01 — возможности</p>
+              <h2 class="x-h2" id="umeet-title">Что умеет</h2>
+            </div>
+            <div class="x-grid">
+              <article class="x-card"><span class="x-ico" aria-hidden="true">01</span><h3>Умный диалог</h3><p>Отвечает на любые вопросы и помнит контекст беседы.</p></article>
+              <article class="x-card"><span class="x-ico" aria-hidden="true">02</span><h3>Текст и код</h3><p>Пишет статьи, письма и программный код на любом языке.</p></article>
+              <article class="x-card"><span class="x-ico" aria-hidden="true">03</span><h3>Перевод и пересказ</h3><p>Переводит между языками и сжимает длинные тексты до сути.</p></article>
+            </div>
+          </section>
+
+          <section class="x-sec" id="modeli" aria-labelledby="modeli-title">
+            <div>
+              <p class="x-eyebrow">// 02 — модели</p>
+              <h2 class="x-h2" id="modeli-title">Нейросети</h2>
+            </div>
+            <div class="x-grid">
+              <article class="x-card x-model"><span class="x-spec">Универсальный собеседник</span><h3>Flast Chat</h3>
+                <ul><li>Быстрые ответы</li><li>Память диалога</li><li>Русский и английский</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Генерация текстов</span><h3>Flast Writer</h3>
+                <ul><li>Статьи и посты</li><li>Письма и реклама</li><li>В нужном тоне</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Помощник программиста</span><h3>Flast Coder</h3>
+                <ul><li>Пишет код</li><li>Объясняет код</li><li>Находит ошибки</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Переводчик</span><h3>Flast Translate</h3>
+                <ul><li>Более 50 языков</li><li>Сохраняет смысл и стиль</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Пересказ</span><h3>Flast Summary</h3>
+                <ul><li>Сжимает длинные документы</li><li>Оставляет только главное</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Генератор идей</span><h3>Flast Ideas</h3>
+                <ul><li>Мозговой штурм</li><li>Названия и сюжеты</li><li>Концепции</li></ul></article>
+            </div>
+          </section>
+
+          <section class="x-sec" id="kak" aria-labelledby="kak-title">
+            <div>
+              <p class="x-eyebrow">// 03 — три шага</p>
+              <h2 class="x-h2" id="kak-title">Как это работает</h2>
+            </div>
+            <ol class="x-steps">
+              <li><span class="x-num" aria-hidden="true">01</span><p>Выбери нейросеть под задачу.</p></li>
+              <li><span class="x-num" aria-hidden="true">02</span><p>Напиши запрос простыми словами.</p></li>
+              <li><span class="x-num" aria-hidden="true">03</span><p>Получи готовый результат за секунды.</p></li>
+            </ol>
+          </section>
+
+          <section class="x-sec" id="vozmozhnosti" aria-labelledby="voz-title">
+            <div>
+              <p class="x-eyebrow">// 04 — что можно сделать</p>
+              <h2 class="x-h2" id="voz-title">Возможности</h2>
+            </div>
+            <ul class="x-check">
+              <li>Написать статью или пост</li>
+              <li>Составить письмо или резюме</li>
+              <li>Перевести текст</li>
+              <li>Объяснить сложную тему простыми словами</li>
+              <li>Написать и исправить код</li>
+              <li>Придумать идеи и названия</li>
+              <li>Пересказать длинный документ</li>
+            </ul>
+          </section>
+
+          <section class="x-cta" aria-labelledby="cta-title">
+            <p class="x-mono">[ flastai.github.io ]</p>
+            <h2 class="x-big" id="cta-title">Попробуй Flast</h2>
+            <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
+          </section>
+        </main>
+
+        <footer class="x-foot">
+          <a class="x-logo" href="#top" aria-label="Flast — наверх">
+            <span class="x-tile"><i></i></span>
+            <span class="x-word"><b>Flast</b></span>
+          </a>
+          <p class="x-mail">[ FLASTAI.GITHUB.IO ]</p>
+          <p>Flast · 2026</p>
+        </footer>
+      </div>
+    </div>
+
+    <dialog class="x-modal" id="apply" aria-labelledby="apply-title">
+      <div class="x-modal__in">
+        <button class="x-close" type="button" data-close aria-label="Закрыть">×</button>
+        <div class="x-step-form">
+          <div class="x-modal__in" style="padding:0">
+            <h2 id="apply-title">Заявка на доступ</h2>
+            <p>Оставь заявку — её одобрят, и откроется доступ к Flast.</p>
+            <form class="x-form" id="apply-form" novalidate>
+              <label class="x-field"><span>Имя</span><input type="text" name="name" required autocomplete="given-name" /></label>
+              <label class="x-field"><span>Комментарий · по желанию</span><textarea name="comment" rows="3"></textarea></label>
+              <p class="x-err" id="apply-err" role="alert"></p>
+              <button class="x-btn" type="submit">Отправить <span aria-hidden="true">→</span></button>
+            </form>
+          </div>
+        </div>
+        <div class="x-step-done" hidden>
+          <div class="x-modal__in" style="padding:0">
+            <h2 id="done-title" tabindex="-1">Заявка отправлена ✓</h2>
+            <p>Открой Telegram, нажми СТАРТ и «Отправить». Как только заявку одобрят, бот пришлёт тебе личную ссылку на Flast.</p>
+            <div class="x-done">
+              <a class="x-btn" id="tg-link" href="https://t.me/flastai_requests_bot" target="_blank" rel="noopener">Открыть Telegram</a>
+              <button class="x-textbtn" type="button" data-close>Закрыть</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="hark.js"></script>
+    <script>
+      (function () {
+        var dlg = document.getElementById("apply");
+        var form = document.getElementById("apply-form");
+        var err = document.getElementById("apply-err");
+        var stepForm = dlg.querySelector(".x-step-form");
+        var stepDone = dlg.querySelector(".x-step-done");
+
+        function reset() {
+          stepForm.hidden = false; stepDone.hidden = true;
+          dlg.setAttribute("aria-labelledby", "apply-title");
+          err.textContent = "";
+          form.querySelectorAll("[aria-invalid]").forEach(function (el) { el.removeAttribute("aria-invalid"); });
+        }
+        function open() {
+          reset();
+          if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+          document.body.classList.add("x-locked");
+        }
+        function close() {
+          if (typeof dlg.close === "function") dlg.close(); else dlg.removeAttribute("open");
+        }
+        dlg.addEventListener("close", function () { document.body.classList.remove("x-locked"); });
+
+        /* ---------- State ---------- */
+        var OFFLINE = "Сервер Flast сейчас недоступен, попробуй позже";
+        var key = null, api = null, authed = false;
+        var appSec = document.getElementById("app");
+
+        document.querySelectorAll("[data-apply]").forEach(function (b) {
+          b.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (authed) { appSec.hidden = false; appSec.scrollIntoView({ behavior: "smooth", block: "start" }); }
+            else open();
+          });
+        });
+        dlg.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", close); });
+        dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
+
+        /* ---------- Application payload ---------- */
+        function payload(name, comment) {
+          var bytes = new TextEncoder().encode(name.trim() + "\n" + comment.trim());
+          if (bytes.length > 48) {
+            bytes = bytes.slice(0, 48);
+            var k = bytes.length - 1;
+            while (k >= 0 && (bytes[k] & 0xC0) === 0x80) k--;
+            if (k >= 0) {
+              var lead = bytes[k];
+              var need = lead < 0x80 ? 1 : (lead & 0xE0) === 0xC0 ? 2 : (lead & 0xF0) === 0xE0 ? 3 : (lead & 0xF8) === 0xF0 ? 4 : 1;
+              if (bytes.length - k < need) bytes = bytes.slice(0, k);
+            } else bytes = new Uint8Array(0);
+          }
+          var s = "";
+          for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+          return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var f = form.elements.name;
+          if (!f.value.trim()) { f.setAttribute("aria-invalid", "true"); err.textContent = "Напиши своё имя."; f.focus(); return; }
+          f.removeAttribute("aria-invalid");
+          err.textContent = "";
+          var url = "https://t.me/flastai_requests_bot?start=" + payload(f.value, form.elements.comment.value);
+          window.open(url, "_blank");
+          document.getElementById("tg-link").href = url;
+          stepForm.hidden = true; stepDone.hidden = false;
+          dlg.setAttribute("aria-labelledby", "done-title");
+          form.reset();
+          document.getElementById("done-title").focus();
+        });
+
+        /* ---------- API ---------- */
+        function headers(post) {
+          var h = { "Authorization": "Bearer " + key, "ngrok-skip-browser-warning": "1" };
+          if (post) h["Content-Type"] = "application/json";
+          return h;
+        }
+        function call(method, path, body) {
+          if (!api) return Promise.resolve({ status: 0, data: { error: OFFLINE } });
+          var opts = { method: method, headers: headers(method === "POST") };
+          if (body !== undefined) opts.body = JSON.stringify(body);
+          return fetch(api + path, opts).then(function (r) {
+            return r.text().then(function (t) {
+              var d = {}; try { d = t ? JSON.parse(t) : {}; } catch (x) { d = {}; }
+              if (r.status === 401 && path !== "/api/me") logoutSoft();
+              return { status: r.status, ok: r.ok, data: d || {} };
+            });
+          }, function () { return { status: 0, data: { error: OFFLINE } }; });
+        }
+        function errText(res, fallback) {
+          return (res.data && res.data.error) || (res.status === 0 ? OFFLINE : fallback);
+        }
+        function clearKey() {
+          key = null;
+          try { localStorage.removeItem("flast_key"); } catch (e) {}
+        }
+        function setGuest() {
+          authed = false;
+          document.body.classList.remove("x-auth");
+          document.getElementById("user").hidden = true;
+          document.getElementById("hint").hidden = false;
+          appSec.hidden = true;
+          document.querySelectorAll("[data-apply]").forEach(function (b) { b.setAttribute("aria-haspopup", "dialog"); });
+        }
+        function logoutSoft() { clearKey(); setGuest(); }
+        function setAuthed(name) {
+          authed = true;
+          document.body.classList.add("x-auth");
+          document.getElementById("uname").textContent = "● " + (name || "Ты");
+          document.getElementById("user").hidden = false;
+          document.getElementById("hint").hidden = true;
+          appSec.hidden = false;
+          document.getElementById("offline").hidden = true;
+          document.getElementById("studio").hidden = false;
+          document.querySelectorAll("[data-apply]").forEach(function (b) { b.removeAttribute("aria-haspopup"); });
+        }
+        function setOffline() {
+          appSec.hidden = false;
+          document.getElementById("offline").hidden = false;
+          document.getElementById("studio").hidden = true;
+        }
+        document.getElementById("logout").addEventListener("click", function () { clearKey(); location.reload(); });
+
+        /* ---------- Init ---------- */
+        var m = location.hash.match(/[#&]k=([^&]+)/);
+        if (m) {
+          try { key = decodeURIComponent(m[1]); } catch (e) { key = m[1]; }
+          try { localStorage.setItem("flast_key", key); } catch (e) {}
+          try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+        } else {
+          try { key = localStorage.getItem("flast_key"); } catch (e) { key = null; }
+        }
+        setGuest();
+        var cfg = fetch("config.json", { cache: "no-store" })
+          .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+          .then(function (c) { if (!c || !c.api) throw 0; api = String(c.api).replace(/\/+$/, ""); return true; })
+          .catch(function () { api = null; return false; });
+        if (key) {
+          cfg.then(function (ok) {
+            if (!ok) { setOffline(); return; }
+            return call("GET", "/api/me").then(function (res) {
+              if (res.status === 200) setAuthed(res.data.name);
+              else if (res.status === 401) logoutSoft();
+              else setOffline();
+            });
+          });
+        }
+
+        /* ---------- Tabs ---------- */
+        var tabs = Array.prototype.slice.call(document.querySelectorAll(".x-tab"));
+        function selectTab(t, focus) {
+          tabs.forEach(function (o) {
+            var on = o === t;
+            o.setAttribute("aria-selected", on ? "true" : "false");
+            o.tabIndex = on ? 0 : -1;
+            document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+          });
+          if (focus) t.focus();
+        }
+        tabs.forEach(function (t, i) {
+          t.addEventListener("click", function () { selectTab(t); });
+          t.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowRight") selectTab(tabs[(i + 1) % tabs.length], true);
+            if (e.key === "ArrowLeft") selectTab(tabs[(i + tabs.length - 1) % tabs.length], true);
+          });
+        });
+
+        /* ---------- Chat ---------- */
+        var history_ = [];
+        var msgs = document.getElementById("msgs");
+        var chatForm = document.getElementById("chat-form");
+        var chatIn = document.getElementById("chat-in");
+        var chatErr = document.getElementById("chat-err");
+        var chatSend = document.getElementById("chat-send");
+        var busy = false;
+        function bubble(role, text, typing) {
+          var d = document.createElement("div");
+          d.className = "x-bubble " + (role === "user" ? "x-bubble--user" : "x-bubble--bot") + (typing ? " x-bubble--typing" : "");
+          d.textContent = text;
+          return d;
+        }
+        function renderChat() {
+          msgs.textContent = "";
+          if (!history_.length) {
+            var p = document.createElement("p"); p.className = "x-empty"; p.textContent = "Напиши первое сообщение — Flast ответит.";
+            msgs.appendChild(p); return;
+          }
+          history_.forEach(function (h) { msgs.appendChild(bubble(h.role, h.content)); });
+          msgs.scrollTop = msgs.scrollHeight;
+        }
+        function sendChat() {
+          if (busy) return;
+          var text = chatIn.value.trim();
+          if (!text) { chatIn.focus(); return; }
+          chatErr.textContent = "";
+          history_.push({ role: "user", content: text });
+          chatIn.value = "";
+          renderChat();
+          var typing = bubble("assistant", "Flast печатает…", true);
+          msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+          busy = true; chatSend.disabled = true;
+          call("POST", "/api/chat", { messages: history_ }).then(function (res) {
+            busy = false; chatSend.disabled = false;
+            if (res.ok && res.data && typeof res.data.reply === "string") {
+              history_.push({ role: "assistant", content: res.data.reply });
+              renderChat();
+            } else {
+              var last = history_.pop();
+              renderChat();
+              if (!chatIn.value) chatIn.value = last.content;
+              chatErr.textContent = errText(res, "Не удалось получить ответ, попробуй ещё раз.");
+            }
+          });
+        }
+        chatForm.addEventListener("submit", function (e) { e.preventDefault(); sendChat(); });
+        chatIn.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendChat(); }
+        });
+        document.getElementById("chat-new").addEventListener("click", function () {
+          if (busy) return;
+          history_ = []; chatErr.textContent = ""; renderChat(); chatIn.focus();
+        });
+
+        /* ---------- Image downscale ---------- */
+        function readImage(file) {
+          return new Promise(function (resolve, reject) {
+            var fr = new FileReader();
+            fr.onerror = reject;
+            fr.onload = function () {
+              var img = new Image();
+              img.onerror = reject;
+              img.onload = function () {
+                var w = img.naturalWidth, h = img.naturalHeight, s = Math.min(1, 1280 / Math.max(w, h));
+                var c = document.createElement("canvas");
+                c.width = Math.round(w * s); c.height = Math.round(h * s);
+                var ctx = c.getContext("2d");
+                ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+                ctx.drawImage(img, 0, 0, c.width, c.height);
+                resolve(c.toDataURL("image/jpeg", 0.9));
+              };
+              img.src = fr.result;
+            };
+            fr.readAsDataURL(file);
+          });
+        }
+
+        /* ---------- Video & photo generation ---------- */
+        document.querySelectorAll("[data-gen]").forEach(function (gf) {
+          var kind = gf.getAttribute("data-gen");
+          var isVideo = kind === "video";
+          var ratio = "9:16", image = null, blobUrl = null;
+          var chips = gf.querySelectorAll(".x-chip");
+          var fileIn = gf.querySelector("input[type=file]");
+          var prev = gf.querySelector(".x-prev");
+          var gErr = gf.querySelector(".x-err");
+          var btn = gf.querySelector("button[type=submit]");
+          var prog = gf.querySelector(".x-prog");
+          var bar = gf.querySelector(".x-bar i");
+          var note = gf.querySelector(".x-note");
+          var pct = gf.querySelector(".x-progline b");
+          var result = gf.querySelector(".x-result");
+
+          chips.forEach(function (c) {
+            c.addEventListener("click", function () {
+              ratio = c.getAttribute("data-ratio");
+              chips.forEach(function (o) { o.setAttribute("aria-pressed", o === c ? "true" : "false"); });
+            });
+          });
+          fileIn.addEventListener("change", function () {
+            var f = fileIn.files && fileIn.files[0];
+            if (!f) return;
+            gErr.textContent = "";
+            readImage(f).then(function (url) {
+              image = url;
+              prev.querySelector("img").src = url;
+              prev.querySelector("span").textContent = f.name;
+              prev.hidden = false;
+            }, function () { image = null; prev.hidden = true; gErr.textContent = "Не удалось прочитать фото, выбери другое."; });
+          });
+          prev.querySelector(".x-close").addEventListener("click", function () {
+            image = null; fileIn.value = ""; prev.hidden = true; prev.querySelector("img").removeAttribute("src");
+          });
+
+          function progress(p, text) {
+            var v = Math.max(0, Math.min(100, Math.round(Number(p) || 0)));
+            bar.style.width = v + "%"; pct.textContent = v + "%";
+            if (text) note.textContent = text;
+          }
+          function finish(msg) {
+            btn.disabled = false;
+            if (msg) { prog.hidden = true; gErr.textContent = msg; }
+          }
+          function showResult(id) {
+            note.textContent = "Загружаю результат…";
+            fetch(api + "/api/file/" + encodeURIComponent(id) + "/0", { headers: headers(false) })
+              .then(function (r) { if (!r.ok) throw r.status; return r.blob(); })
+              .then(function (b) {
+                if (blobUrl) URL.revokeObjectURL(blobUrl);
+                blobUrl = URL.createObjectURL(b);
+                result.textContent = "";
+                var media;
+                if (isVideo) {
+                  media = document.createElement("video");
+                  media.controls = true; media.loop = true; media.playsInline = true;
+                  media.setAttribute("playsinline", "");
+                } else {
+                  media = document.createElement("img");
+                  media.alt = "Сгенерированное фото";
+                }
+                media.src = blobUrl;
+                var a = document.createElement("a");
+                a.className = "x-btn"; a.href = blobUrl; a.download = isVideo ? "flast.mp4" : "flast.jpg";
+                a.textContent = "Скачать";
+                result.appendChild(media); result.appendChild(a);
+                result.hidden = false; prog.hidden = true;
+                finish();
+              })
+              .catch(function (s) { finish(s === 401 ? "Доступ закончился, открой ссылку из бота ещё раз." : "Не удалось загрузить результат, попробуй ещё раз."); });
+          }
+          function poll(id, fails) {
+            setTimeout(function () {
+              call("GET", "/api/job/" + encodeURIComponent(id)).then(function (res) {
+                if (!res.ok) {
+                  if (res.status === 0 && fails < 5) return poll(id, fails + 1);
+                  return finish(errText(res, "Не удалось узнать статус, попробуй ещё раз."));
+                }
+                var d = res.data || {};
+                if (d.status === "done") { progress(100, d.note || "Готово"); showResult(id); }
+                else if (d.status === "error") finish(d.note || "Генерация не удалась.");
+                else { progress(d.progress, d.note); poll(id, 0); }
+              });
+            }, 3000);
+          }
+
+          gf.addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (btn.disabled) return;
+            var prompt = gf.elements.prompt.value.trim();
+            if (!prompt && !image) { gErr.textContent = isVideo ? "Опиши видео или добавь фото." : "Опиши фото."; gf.elements.prompt.focus(); return; }
+            if (!prompt && !isVideo) { gErr.textContent = "Опиши фото."; gf.elements.prompt.focus(); return; }
+            gErr.textContent = "";
+            btn.disabled = true;
+            result.hidden = true;
+            prog.hidden = false; progress(0, "Отправляю запрос…");
+            var body = { prompt: prompt, ratio: ratio };
+            if (image) body.image = image;
+            call("POST", isVideo ? "/api/video" : "/api/image", body).then(function (res) {
+              if (res.ok && res.data && res.data.job != null) { progress(0, "В очереди…"); poll(res.data.job, 0); }
+              else finish(errText(res, "Не удалось запустить генерацию, попробуй ещё раз."));
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
