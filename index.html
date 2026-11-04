@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flast — твой ИИ-компаньон</title>
-    <meta name="description" content="Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя." />
+    <title>FLast — твой ИИ-компаньон</title>
+    <meta name="description" content="FLast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -86,6 +86,8 @@
       .x-modal h2 { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; font-size: clamp(34px, 8vw, 52px); margin: 0; padding-right: 48px; }
       .x-modal p { margin: 0; color: #cfcfd2; font-size: 16px; line-height: 1.5; }
       .x-close { position: absolute; top: 12px; right: 12px; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--x-line); background: transparent; color: var(--x-ink); font-size: 26px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+      .x-modal .x-close:not(.x-prev .x-close) { z-index: 5; }
+      #apply h2 { padding-right: 60px; }
       .x-close:hover { border-color: rgba(255,255,255,.4); }
       .x-form { display: grid; gap: 16px; }
       .x-field { display: grid; gap: 8px; }
@@ -209,9 +211,9 @@
     <div class="page" id="top">
       <div class="x-wrap">
         <header class="x-top">
-          <a class="x-logo" href="#top" aria-label="Flast — на главную">
+          <a class="x-logo" href="#top" aria-label="FLast — на главную">
             <span class="x-tile"><i></i></span>
-            <span class="x-word"><b>Flast</b><small>ИИ-компаньон</small></span>
+            <span class="x-word"><b>FLast</b><small>ИИ-компаньон</small></span>
           </a>
           <div class="x-topr">
             <div class="x-user" id="user" hidden>
@@ -226,7 +228,7 @@
           <section class="x-hero" aria-labelledby="hero-title">
             <span class="x-live">ОНЛАЙН</span>
             <h1 class="x-h1" id="hero-title"><span>Твой ИИ-компаньон</span><span>уже <em class="x-key" style="font-style:normal">здесь</em></span></h1>
-            <p class="x-lead">Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
+            <p class="x-lead">FLast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
             <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
             <p class="x-hint" id="hint">Уже есть доступ? Открой ссылку из бота</p>
             <p class="x-mono">[ flastai.github.io ]</p>
@@ -235,9 +237,9 @@
           <section class="x-sec" id="app" aria-labelledby="app-title" hidden>
             <div>
               <p class="x-eyebrow">// студия</p>
-              <h2 class="x-h2" id="app-title">Студия Flast</h2>
+              <h2 class="x-h2" id="app-title">Студия FLast</h2>
             </div>
-            <p class="x-offline" id="offline" hidden>Сервер Flast сейчас недоступен, попробуй позже</p>
+            <p class="x-offline" id="offline" hidden>Сервер FLast сейчас недоступен, попробуй позже</p>
             <div class="x-studio" id="studio">
               <div class="x-tabs" role="tablist" aria-label="Режим">
                 <button class="x-tab" type="button" role="tab" id="tab-chat" aria-controls="p-chat" aria-selected="true">Чат</button>
@@ -246,7 +248,7 @@
               </div>
 
               <div class="x-panel" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
-                <div class="x-msgs" id="msgs" role="log" aria-live="polite"><p class="x-empty">Напиши первое сообщение — Flast ответит.</p></div>
+                <div class="x-msgs" id="msgs" role="log" aria-live="polite"><p class="x-empty">Напиши первое сообщение — FLast ответит.</p></div>
                 <form class="x-form" id="chat-form" novalidate>
                   <label class="x-field"><span>Сообщение</span><textarea name="msg" id="chat-in" rows="3" placeholder="Спроси что угодно…"></textarea></label>
                   <p class="x-err" id="chat-err" role="alert"></p>
@@ -325,17 +327,17 @@
               <h2 class="x-h2" id="modeli-title">Нейросети</h2>
             </div>
             <div class="x-grid">
-              <article class="x-card x-model"><span class="x-spec">Универсальный собеседник</span><h3>Flast Chat</h3>
+              <article class="x-card x-model"><span class="x-spec">Универсальный собеседник</span><h3>FLast Chat</h3>
                 <ul><li>Быстрые ответы</li><li>Память диалога</li><li>Русский и английский</li></ul></article>
-              <article class="x-card x-model"><span class="x-spec">Генерация текстов</span><h3>Flast Writer</h3>
+              <article class="x-card x-model"><span class="x-spec">Генерация текстов</span><h3>FLast Writer</h3>
                 <ul><li>Статьи и посты</li><li>Письма и реклама</li><li>В нужном тоне</li></ul></article>
-              <article class="x-card x-model"><span class="x-spec">Помощник программиста</span><h3>Flast Coder</h3>
+              <article class="x-card x-model"><span class="x-spec">Помощник программиста</span><h3>FLast Coder</h3>
                 <ul><li>Пишет код</li><li>Объясняет код</li><li>Находит ошибки</li></ul></article>
-              <article class="x-card x-model"><span class="x-spec">Переводчик</span><h3>Flast Translate</h3>
+              <article class="x-card x-model"><span class="x-spec">Переводчик</span><h3>FLast Translate</h3>
                 <ul><li>Более 50 языков</li><li>Сохраняет смысл и стиль</li></ul></article>
-              <article class="x-card x-model"><span class="x-spec">Пересказ</span><h3>Flast Summary</h3>
+              <article class="x-card x-model"><span class="x-spec">Пересказ</span><h3>FLast Summary</h3>
                 <ul><li>Сжимает длинные документы</li><li>Оставляет только главное</li></ul></article>
-              <article class="x-card x-model"><span class="x-spec">Генератор идей</span><h3>Flast Ideas</h3>
+              <article class="x-card x-model"><span class="x-spec">Генератор идей</span><h3>FLast Ideas</h3>
                 <ul><li>Мозговой штурм</li><li>Названия и сюжеты</li><li>Концепции</li></ul></article>
             </div>
           </section>
@@ -370,18 +372,18 @@
 
           <section class="x-cta" aria-labelledby="cta-title">
             <p class="x-mono">[ flastai.github.io ]</p>
-            <h2 class="x-big" id="cta-title">Попробуй Flast</h2>
+            <h2 class="x-big" id="cta-title">Попробуй FLast</h2>
             <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
           </section>
         </main>
 
         <footer class="x-foot">
-          <a class="x-logo" href="#top" aria-label="Flast — наверх">
+          <a class="x-logo" href="#top" aria-label="FLast — наверх">
             <span class="x-tile"><i></i></span>
-            <span class="x-word"><b>Flast</b></span>
+            <span class="x-word"><b>FLast</b></span>
           </a>
           <p class="x-mail">[ FLASTAI.GITHUB.IO ]</p>
-          <p>Flast · 2026</p>
+          <p>FLast · 2026</p>
         </footer>
       </div>
     </div>
@@ -392,7 +394,7 @@
         <div class="x-step-form">
           <div class="x-modal__in" style="padding:0">
             <h2 id="apply-title">Заявка на доступ</h2>
-            <p>Оставь заявку — её одобрят, и откроется доступ к Flast.</p>
+            <p>Оставь заявку — её одобрят, и откроется доступ к FLast.</p>
             <form class="x-form" id="apply-form" novalidate>
               <label class="x-field"><span>Имя</span><input type="text" name="name" required autocomplete="given-name" /></label>
               <label class="x-field"><span>Комментарий · по желанию</span><textarea name="comment" rows="3"></textarea></label>
@@ -404,7 +406,7 @@
         <div class="x-step-done" hidden>
           <div class="x-modal__in" style="padding:0">
             <h2 id="done-title" tabindex="-1">Заявка отправлена ✓</h2>
-            <p>Открой Telegram, нажми СТАРТ и «Отправить». Как только заявку одобрят, бот пришлёт тебе личную ссылку на Flast.</p>
+            <p>Открой Telegram, нажми СТАРТ и «Отправить». Как только заявку одобрят, бот пришлёт тебе личную ссылку на FLast.</p>
             <div class="x-done">
               <a class="x-btn" id="tg-link" href="https://t.me/flastai_requests_bot" target="_blank" rel="noopener">Открыть Telegram</a>
               <button class="x-textbtn" type="button" data-close>Закрыть</button>
@@ -440,7 +442,7 @@
         dlg.addEventListener("close", function () { document.body.classList.remove("x-locked"); });
 
         /* ---------- State ---------- */
-        var OFFLINE = "Сервер Flast сейчас недоступен, попробуй позже";
+        var OFFLINE = "Сервер FLast сейчас недоступен, попробуй позже";
         var key = null, api = null, authed = false;
         var appSec = document.getElementById("app");
 
@@ -600,7 +602,7 @@
         function renderChat() {
           msgs.textContent = "";
           if (!history_.length) {
-            var p = document.createElement("p"); p.className = "x-empty"; p.textContent = "Напиши первое сообщение — Flast ответит.";
+            var p = document.createElement("p"); p.className = "x-empty"; p.textContent = "Напиши первое сообщение — FLast ответит.";
             msgs.appendChild(p); return;
           }
           history_.forEach(function (h) { msgs.appendChild(bubble(h.role, h.content)); });
@@ -614,7 +616,7 @@
           history_.push({ role: "user", content: text });
           chatIn.value = "";
           renderChat();
-          var typing = bubble("assistant", "Flast печатает…", true);
+          var typing = bubble("assistant", "FLast печатает…", true);
           msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
           busy = true; chatSend.disabled = true;
           call("POST", "/api/chat", { messages: history_ }).then(function (res) {
