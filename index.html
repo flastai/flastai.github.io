@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
     />
     <link rel="stylesheet" href="hark.css" />
     <link rel="stylesheet" href="hark-hero.css" />
     <style>
-      :root { --x-bg: #0c0c0d; --x-ink: #f5f5f4; --x-dim: #9b9b9f; --x-line: rgba(255,255,255,.12); --x-card: #141416; --x-display: "Anton", "Archivo Black", "Arial Black", Impact, sans-serif; --x-mono: "Space Mono", "Geist Mono", ui-monospace, monospace; }
+      :root { --x-bg: #0c0c0d; --x-ink: #f5f5f4; --x-dim: #9b9b9f; --x-line: rgba(255,255,255,.12); --x-card: #141416; --x-display: "Manrope", system-ui, sans-serif; --x-mono: "Manrope", system-ui, sans-serif; }
       html, body { background: var(--x-bg); color: var(--x-ink); color-scheme: dark; }
-      body { font-family: "Geist", system-ui, sans-serif; }
+      body { font-family: "Manrope", system-ui, sans-serif; }
       .x-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; background-color: var(--x-bg);
         background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
         background-size: 48px 48px; }
@@ -36,7 +36,7 @@
       .x-hero { display: grid; gap: 28px; justify-items: start; padding-top: clamp(24px, 8vw, 80px); }
       .x-live { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.35); border-radius: var(--r-pill); padding: 6px 14px; font-family: var(--x-mono); font-size: 12px; letter-spacing: .14em; }
       .x-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--fill-system-green, #34c759); box-shadow: 0 0 0 4px rgba(52,199,89,.18); }
-      .x-h1, .x-h2, .x-big { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; letter-spacing: .005em; margin: 0; }
+      .x-h1, .x-h2, .x-big { font-family: var(--x-display); font-weight: 800; line-height: 1.05; letter-spacing: -.02em; margin: 0; }
       .x-h1 { font-size: clamp(52px, 13vw, 150px); }
       .x-h1 span { display: block; }
       .x-key { display: inline-block; background: #fff; color: var(--x-bg); border-radius: .22em; padding: .02em .2em .04em; margin-top: .06em; }
@@ -62,7 +62,7 @@
 
       .x-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
       .x-steps li { border-top: 1px solid rgba(255,255,255,.35); padding-top: 20px; display: grid; gap: 12px; }
-      .x-num { font-family: var(--x-display); font-size: clamp(72px, 12vw, 120px); line-height: .9; color: transparent; -webkit-text-stroke: 1.5px #fff; }
+      .x-num { font-family: var(--x-display); font-size: clamp(72px, 12vw, 120px); line-height: .9; color: transparent; -webkit-text-stroke: 1.5px #fff; font-weight: 800; }
       .x-steps p { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.35; }
 
       .x-check { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--x-line); }
@@ -83,7 +83,7 @@
       .x-modal { width: min(100% - 2 * var(--gutter), 520px); max-width: none; max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--x-line); border-radius: var(--r-xl); background: var(--x-card); color: var(--x-ink); overflow: auto; overscroll-behavior: contain; }
       .x-modal::backdrop { background: rgba(0,0,0,.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
       .x-modal__in { position: relative; display: grid; gap: 20px; padding: clamp(28px, 6vw, 44px); }
-      .x-modal h2 { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; font-size: clamp(34px, 8vw, 52px); margin: 0; padding-right: 48px; }
+      .x-modal h2 { font-family: var(--x-display); font-weight: 800; line-height: 1.05; letter-spacing: -.02em; font-size: clamp(34px, 8vw, 52px); margin: 0; padding-right: 48px; }
       .x-modal p { margin: 0; color: #cfcfd2; font-size: 16px; line-height: 1.5; }
       .x-close { position: absolute; top: 12px; right: 12px; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--x-line); background: transparent; color: var(--x-ink); font-size: 26px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
       .x-modal .x-close:not(.x-prev .x-close) { z-index: 5; }
@@ -92,7 +92,7 @@
       .x-form { display: grid; gap: 16px; }
       .x-field { display: grid; gap: 8px; }
       .x-field span { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .1em; text-transform: uppercase; }
-      .x-field input, .x-field textarea { width: 100%; box-sizing: border-box; min-height: 56px; padding: 14px 18px; border-radius: var(--r-s); border: 1px solid var(--x-line); background: var(--x-bg); color: var(--x-ink); font: 16px/1.4 "Geist", system-ui, sans-serif; }
+      .x-field input, .x-field textarea { width: 100%; box-sizing: border-box; min-height: 56px; padding: 14px 18px; border-radius: var(--r-s); border: 1px solid var(--x-line); background: var(--x-bg); color: var(--x-ink); font: 16px/1.4 "Manrope", system-ui, sans-serif; }
       .x-field textarea { min-height: 104px; resize: vertical; }
       .x-field input:focus, .x-field textarea:focus { outline: none; border-color: #fff; }
       .x-field input[aria-invalid="true"] { border-color: var(--fill-system-red, #ff453a); }
@@ -100,7 +100,7 @@
       .x-err:empty { display: none; }
       .x-form .x-btn, .x-done .x-btn { justify-content: center; width: 100%; box-sizing: border-box; }
       .x-done { display: grid; gap: 12px; }
-      .x-textbtn { min-height: 56px; background: none; border: 0; color: var(--x-dim); font: 500 15px "Geist", system-ui, sans-serif; letter-spacing: .04em; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+      .x-textbtn { min-height: 56px; background: none; border: 0; color: var(--x-dim); font: 500 15px "Manrope", system-ui, sans-serif; letter-spacing: .04em; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
       .x-textbtn:hover { color: var(--x-ink); }
       body.x-locked { overflow: hidden; }
       .x-modal h2:focus { outline: none; }
@@ -115,11 +115,18 @@
       .x-hint { margin: -12px 0 0; color: var(--x-dim); font-size: 14px; }
       .x-hint[hidden] { display: none; }
 
+      .x-adm { display: grid; gap: 12px; }
+      .x-req { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--x-line); border-radius: var(--r-s); background: var(--x-bg); }
+      .x-req b { font-size: 17px; } .x-req p { margin: 0; color: var(--x-dim); font-size: 15px; white-space: pre-wrap; word-break: break-word; }
+      .x-req .x-row { display: flex; gap: 8px; flex-wrap: wrap; }
+      .x-req .x-row .x-btn { min-height: 48px; padding: 12px 22px; font-size: 15px; }
+      .x-btn.x-ghost { background: transparent; color: var(--x-ink); border: 1px solid rgba(255,255,255,.35); }
+      .x-badge { font-size: 13px; color: var(--x-dim); }
       /* Studio */
-      #app[hidden], .x-panel[hidden], .x-studio[hidden], .x-prog[hidden], .x-result[hidden], .x-prev[hidden] { display: none; }
+      #app[hidden], .x-tab[hidden], .x-panel[hidden], .x-studio[hidden], .x-prog[hidden], .x-result[hidden], .x-prev[hidden] { display: none; }
       .x-studio { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
       .x-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-      .x-tab { min-height: 48px; padding: 0 26px; border-radius: var(--r-pill); border: 1px solid rgba(255,255,255,.35); background: transparent; color: var(--x-ink); font: 800 15px "Geist", system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+      .x-tab { min-height: 48px; padding: 0 26px; border-radius: var(--r-pill); border: 1px solid rgba(255,255,255,.35); background: transparent; color: var(--x-ink); font: 800 15px "Manrope", system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
       .x-tab:hover { border-color: #fff; }
       .x-tab[aria-selected="true"] { background: #fff; color: var(--x-bg); border-color: #fff; }
       .x-tab:focus-visible, .x-chip:focus-visible, .x-file:focus-within { outline: 2px solid #fff; outline-offset: 3px; }
@@ -230,7 +237,7 @@
             <h1 class="x-h1" id="hero-title"><span>Твой ИИ-компаньон</span><span>уже <em class="x-key" style="font-style:normal">здесь</em></span></h1>
             <p class="x-lead">FLast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
             <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
-            <p class="x-hint" id="hint">Уже есть доступ? Открой ссылку из бота</p>
+            <p class="x-hint" id="hint" hidden></p>
             <p class="x-mono">[ flastai.github.io ]</p>
           </section>
 
@@ -245,6 +252,7 @@
                 <button class="x-tab" type="button" role="tab" id="tab-chat" aria-controls="p-chat" aria-selected="true">Чат</button>
                 <button class="x-tab" type="button" role="tab" id="tab-video" aria-controls="p-video" aria-selected="false" tabindex="-1">Видео</button>
                 <button class="x-tab" type="button" role="tab" id="tab-photo" aria-controls="p-photo" aria-selected="false" tabindex="-1">Фото</button>
+                <button class="x-tab" type="button" role="tab" id="tab-adm" aria-controls="p-adm" aria-selected="false" tabindex="-1" hidden>Заявки</button>
               </div>
 
               <div class="x-panel" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
@@ -305,6 +313,11 @@
                   <div class="x-prog" hidden aria-live="polite"><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">В очереди…</span><b>0%</b></p></div>
                   <div class="x-result" hidden></div>
                 </form>
+              </div>
+
+              <div class="x-panel" id="p-adm" role="tabpanel" aria-labelledby="tab-adm" hidden>
+                <div class="x-adm" id="adm-list"><p class="x-empty">Загружаю заявки…</p></div>
+                <button class="x-textbtn" type="button" id="adm-refresh">Обновить</button>
               </div>
             </div>
           </section>
@@ -406,10 +419,9 @@
         <div class="x-step-done" hidden>
           <div class="x-modal__in" style="padding:0">
             <h2 id="done-title" tabindex="-1">Заявка отправлена ✓</h2>
-            <p>Открой Telegram, нажми СТАРТ и «Отправить». Как только заявку одобрят, бот пришлёт тебе личную ссылку на FLast.</p>
+            <p id="done-text">Заявка на рассмотрении. Как только её одобрят, доступ откроется прямо здесь, на этой странице. Ничего больше делать не нужно.</p>
             <div class="x-done">
-              <a class="x-btn" id="tg-link" href="https://t.me/flastai_requests_bot" target="_blank" rel="noopener">Открыть Telegram</a>
-              <button class="x-textbtn" type="button" data-close>Закрыть</button>
+              <button class="x-btn" type="button" data-close>Понятно</button>
             </div>
           </div>
         </div>
@@ -450,43 +462,75 @@
           b.addEventListener("click", function (e) {
             e.preventDefault();
             if (authed) { appSec.hidden = false; appSec.scrollIntoView({ behavior: "smooth", block: "start" }); }
-            else open();
+            else { open(); if (reqId) showDone(); }
           });
         });
         dlg.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", close); });
         dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
 
-        /* ---------- Application payload ---------- */
-        function payload(name, comment) {
-          var bytes = new TextEncoder().encode(name.trim() + "\n" + comment.trim());
-          if (bytes.length > 48) {
-            bytes = bytes.slice(0, 48);
-            var k = bytes.length - 1;
-            while (k >= 0 && (bytes[k] & 0xC0) === 0x80) k--;
-            if (k >= 0) {
-              var lead = bytes[k];
-              var need = lead < 0x80 ? 1 : (lead & 0xE0) === 0xC0 ? 2 : (lead & 0xF0) === 0xE0 ? 3 : (lead & 0xF8) === 0xF0 ? 4 : 1;
-              if (bytes.length - k < need) bytes = bytes.slice(0, k);
-            } else bytes = new Uint8Array(0);
-          }
-          var s = "";
-          for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
-          return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        /* ---------- Application ---------- */
+        var reqId = null;
+        try { reqId = localStorage.getItem("flast_req"); } catch (e) {}
+        var hint = document.getElementById("hint");
+        function showDone() {
+          stepForm.hidden = true; stepDone.hidden = false;
+          dlg.setAttribute("aria-labelledby", "done-title");
+        }
+        function setPending() {
+          hint.textContent = "Заявка на рассмотрении. Доступ откроется здесь автоматически.";
+          hint.hidden = false;
+        }
+        var pollT = null;
+        function pollReq() {
+          clearTimeout(pollT);
+          if (!reqId || !api || authed) return;
+          fetch(api + "/api/apply/" + encodeURIComponent(reqId), { headers: { "ngrok-skip-browser-warning": "1" } })
+            .then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); })
+            .then(function (res) {
+              if (res.s === 404) { reqId = null; try { localStorage.removeItem("flast_req"); } catch (e) {} hint.hidden = true; return; }
+              var st = res.d.status;
+              if (st === "ok" && res.d.key) {
+                key = res.d.key;
+                try { localStorage.setItem("flast_key", key); localStorage.removeItem("flast_req"); } catch (e) {}
+                reqId = null; close();
+                call("GET", "/api/me").then(function (r2) {
+                  if (r2.status === 200) { setAuthed(r2.data.name, r2.data.admin); appSec.scrollIntoView({ behavior: "smooth", block: "start" }); }
+                });
+                return;
+              }
+              if (st === "no") {
+                reqId = null; try { localStorage.removeItem("flast_req"); } catch (e) {}
+                hint.textContent = "Заявку отклонили. Можно подать новую."; hint.hidden = false;
+                return;
+              }
+              setPending();
+              pollT = setTimeout(pollReq, 8000);
+            }, function () { pollT = setTimeout(pollReq, 15000); });
         }
 
+        var sendBtn = form.querySelector("button[type=submit]");
         form.addEventListener("submit", function (e) {
           e.preventDefault();
           var f = form.elements.name;
           if (!f.value.trim()) { f.setAttribute("aria-invalid", "true"); err.textContent = "Напиши своё имя."; f.focus(); return; }
           f.removeAttribute("aria-invalid");
           err.textContent = "";
-          var url = "https://t.me/flastai_requests_bot?start=" + payload(f.value, form.elements.comment.value);
-          window.open(url, "_blank");
-          document.getElementById("tg-link").href = url;
-          stepForm.hidden = true; stepDone.hidden = false;
-          dlg.setAttribute("aria-labelledby", "done-title");
-          form.reset();
-          document.getElementById("done-title").focus();
+          cfg.then(function (ok) {
+            if (!ok) { err.textContent = OFFLINE; return; }
+            sendBtn.disabled = true;
+            fetch(api + "/api/apply", { method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "1" },
+                                        body: JSON.stringify({ name: f.value, comment: form.elements.comment.value }) })
+              .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+              .then(function (res) {
+                sendBtn.disabled = false;
+                if (!res.ok || !res.d.req) { err.textContent = (res.d && res.d.error) || "Не получилось отправить, попробуй ещё раз."; return; }
+                reqId = res.d.req;
+                try { localStorage.setItem("flast_req", reqId); } catch (e2) {}
+                form.reset(); showDone(); setPending();
+                document.getElementById("done-title").focus();
+                pollReq();
+              }, function () { sendBtn.disabled = false; err.textContent = OFFLINE; });
+          });
         });
 
         /* ---------- API ---------- */
@@ -518,12 +562,13 @@
           authed = false;
           document.body.classList.remove("x-auth");
           document.getElementById("user").hidden = true;
-          document.getElementById("hint").hidden = false;
           appSec.hidden = true;
           document.querySelectorAll("[data-apply]").forEach(function (b) { b.setAttribute("aria-haspopup", "dialog"); });
         }
         function logoutSoft() { clearKey(); setGuest(); }
-        function setAuthed(name) {
+        function setAuthed(name, admin) {
+          document.getElementById("tab-adm").hidden = !admin;
+          if (admin) loadAdm();
           authed = true;
           document.body.classList.add("x-auth");
           document.getElementById("uname").textContent = "● " + (name || "Ты");
@@ -555,11 +600,12 @@
           .then(function (r) { if (!r.ok) throw 0; return r.json(); })
           .then(function (c) { if (!c || !c.api) throw 0; api = String(c.api).replace(/\/+$/, ""); return true; })
           .catch(function () { api = null; return false; });
+        if (!key && reqId) { setPending(); cfg.then(function (ok) { if (ok) pollReq(); }); }
         if (key) {
           cfg.then(function (ok) {
             if (!ok) { setOffline(); return; }
             return call("GET", "/api/me").then(function (res) {
-              if (res.status === 200) setAuthed(res.data.name);
+              if (res.status === 200) setAuthed(res.data.name, res.data.admin);
               else if (res.status === 401) logoutSoft();
               else setOffline();
             });
@@ -584,6 +630,34 @@
             if (e.key === "ArrowLeft") selectTab(tabs[(i + tabs.length - 1) % tabs.length], true);
           });
         });
+
+        /* ---------- Admin ---------- */
+        var admList = document.getElementById("adm-list");
+        function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+        function loadAdm() {
+          call("GET", "/api/admin/requests").then(function (res) {
+            if (res.status !== 200) { admList.innerHTML = '<p class="x-empty">' + esc(errText(res, "Не удалось загрузить")) + "</p>"; return; }
+            var items = res.data.items || [];
+            var wait = items.filter(function (i) { return i.status === "wait"; }).length;
+            document.getElementById("tab-adm").textContent = wait ? "Заявки · " + wait : "Заявки";
+            if (!items.length) { admList.innerHTML = '<p class="x-empty">Заявок пока нет.</p>'; return; }
+            admList.innerHTML = items.map(function (i) {
+              var when = new Date(i.t * 1000).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+              var tail = i.status === "wait"
+                ? '<div class="x-row"><button class="x-btn" data-ok="1" data-id="' + esc(i.id) + '">Принять</button><button class="x-btn x-ghost" data-ok="0" data-id="' + esc(i.id) + '">Отклонить</button></div>'
+                : '<span class="x-badge">' + (i.status === "ok" ? "✓ Принята" : "✕ Отклонена") + "</span>";
+              return '<div class="x-req"><b>' + esc(i.name) + '</b>' + (i.comment ? "<p>" + esc(i.comment) + "</p>" : "") + '<span class="x-badge">' + when + "</span>" + tail + "</div>";
+            }).join("");
+          });
+        }
+        admList.addEventListener("click", function (e) {
+          var b = e.target.closest("button[data-id]");
+          if (!b) return;
+          b.disabled = true;
+          call("POST", "/api/admin/decide", { req: b.getAttribute("data-id"), ok: b.getAttribute("data-ok") === "1" }).then(loadAdm);
+        });
+        document.getElementById("adm-refresh").addEventListener("click", loadAdm);
+        setInterval(function () { if (authed && !document.getElementById("tab-adm").hidden) loadAdm(); }, 20000);
 
         /* ---------- Chat ---------- */
         var history_ = [];
@@ -735,7 +809,7 @@
                 result.hidden = false; prog.hidden = true;
                 finish();
               })
-              .catch(function (s) { finish(s === 401 ? "Доступ закончился, открой ссылку из бота ещё раз." : "Не удалось загрузить результат, попробуй ещё раз."); });
+              .catch(function (s) { finish(s === 401 ? "Доступ закончился. Подай новую заявку." : "Не удалось загрузить результат, попробуй ещё раз."); });
           }
           function poll(id, fails) {
             setTimeout(function () {
