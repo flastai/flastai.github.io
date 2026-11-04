@@ -211,6 +211,19 @@
       }
       @media (max-width: 360px) { .x-h1 { font-size: 36px; } .x-big { font-size: 42px; } .x-h2 { font-size: 32px; } .page { padding-inline: 16px; } }
       @media (prefers-reduced-motion: reduce) { .x-btn, .x-card { transition: none; } .x-btn:hover { transform: none; } }
+    
+      /* Full-screen studio once signed in */
+      body.x-auth .x-hero, body.x-auth #umeet, body.x-auth #modeli, body.x-auth #kak, body.x-auth #vozmozhnosti, body.x-auth .x-cta, body.x-auth .x-foot, body.x-auth .x-toplink, body.x-auth #app > div:first-child { display: none !important; }
+      body.x-auth .x-wrap { gap: 0; padding-block: 0 12px; }
+      body.x-auth #app { min-height: calc(100dvh - 96px); display: flex; flex-direction: column; gap: 16px; }
+      body.x-auth .x-studio { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+      body.x-auth .x-panel:not([hidden]) { flex: 1; display: flex; flex-direction: column; }
+      body.x-auth #p-chat .x-msgs { flex: 1; max-height: none; min-height: 0; height: 0; }
+      body.x-auth #p-chat { min-height: 0; }
+      body.x-auth #chat-form textarea { min-height: 64px; }
+      .x-tabs { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
+      .x-tabs::-webkit-scrollbar { display: none; }
+      .x-tab { flex: none; padding: 0 20px; }
     </style>
   </head>
   <body>
