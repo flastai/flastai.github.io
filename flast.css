@@ -465,3 +465,10 @@ body.x-auth .x-top { position: static; margin: 0; padding: 10px 0; background: n
 body.x-auth .page, body.x-auth .x-wrap { min-width: 0; max-width: 100%; overflow: hidden; }
 .x-top, .x-topr, .x-user { min-width: 0; } .x-logo { flex: none; }
 @media (max-width: 640px) { body.x-auth .x-word { display: none; } .x-me .x-uname { max-width: 40vw; } .x-hil small { display: none; } .x-hil { gap: 8px; } .x-pvrow { flex-wrap: wrap; } .x-pvrow input { flex-basis: 100%; } .x-pvrow .x-btn { flex: 1; } }
+.x-vopt { display: flex; gap: 8px; flex-wrap: wrap; }
+.x-mode .x-vopt { flex-basis: 100%; }
+.x-mode { flex-wrap: wrap; }
+.x-sel { appearance: none; -webkit-appearance: none; min-height: 40px; padding: 0 34px 0 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: #fff; font: 600 13px "Manrope", system-ui, sans-serif; cursor: pointer;
+background: rgba(255,255,255,.07) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23bfffe0' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 13px center; }
+.x-sel:disabled { opacity: .4; }
+.x-sel option { background: #0b1a14; color: #fff; }
