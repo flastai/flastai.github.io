@@ -78,7 +78,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <span class="x-mtag" id="chat-mtag"></span>
 <div class="x-rat" id="chat-rat" role="group" aria-label="Формат"><button type="button" data-r="9:16" aria-pressed="true">9:16</button><button type="button" data-r="16:9" aria-pressed="false">16:9</button><button type="button" data-r="1:1" aria-pressed="false">1:1</button></div>
 <button type="button" class="x-mx" id="chat-mx" aria-label="Обычный чат">×</button>
-<div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="5">5 сек</option><option value="4">4 сек</option><option value="6">6 сек</option><option value="8">8 сек</option><option value="10">10 сек</option><option value="12">12 сек</option></select></div>
+<div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div>
 </div>
 <div class="x-att" id="chat-att" hidden><img alt="Приложенное фото" /><button type="button" class="x-attx" aria-label="Убрать фото">×</button></div>
 <div class="x-crow2">
@@ -92,7 +92,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <div class="x-panel" id="p-video" role="tabpanel" aria-labelledby="tab-video" hidden>
 <form class="x-form" data-gen="video" novalidate>
 <label class="x-field"><span>Опиши видео</span><textarea name="prompt" rows="4" placeholder="Например: кот в очках едет на скейте по ночному городу"></textarea></label>
-<div class="x-field"><span>Модель и длительность</span><div class="x-vopt"><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="5">5 сек</option><option value="4">4 сек</option><option value="6">6 сек</option><option value="8">8 сек</option><option value="10">10 сек</option><option value="12">12 сек</option></select></div></div>
+<div class="x-field"><span>Модель и длительность</span><div class="x-vopt"><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div></div>
 <div class="x-field"><span>Формат</span>
 <div class="x-chips" role="group" aria-label="Соотношение сторон">
 <button class="x-chip" type="button" data-ratio="9:16" aria-pressed="true">9:16</button>
@@ -108,7 +108,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 </div>
 <p class="x-err" role="alert"></p>
 <button class="x-btn" type="submit">Сгенерировать видео <span aria-hidden="true">→</span></button>
-<p class="x-mono">6 секунд · 720p · Grok Imagine</p>
+<p class="x-mono" id="v-info">5 сек · 720p · Seedance 2.0 Fast</p>
 <div class="x-prog" hidden aria-live="polite"><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">В очереди…</span><b>0%</b></p></div>
 <div class="x-result" hidden></div>
 </form>
@@ -655,7 +655,10 @@ var chatFile = document.getElementById("chat-file"), chatCam = document.getEleme
 var att = document.getElementById("chat-att"), attImg = null;
 var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
 function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
+var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine" };
 function syncV() {
+var vi = document.getElementById("v-info");
+if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · 720p · " + VNAMES[vModel];
 document.querySelectorAll("[data-vmodel]").forEach(function (e) { e.value = vModel; });
 document.querySelectorAll("[data-vdur]").forEach(function (e) { e.value = vDur; e.disabled = vModel === "grok"; });
 }
@@ -838,7 +841,7 @@ if (kind === "image" && !text) { chatErr.textContent = "Опиши картин�
 chatIn.value = ""; setAtt(null); setMode("chat");
 addUser((kind === "video" ? "Видео: " : "Картинка: ") + (text || "оживи это фото"), img);
 var r = row("bot"), b = r.lastChild; r.classList.add("x-m--typing");
-b.innerHTML = '<div class="x-gen"><p class="x-gtitle">' + (kind === "video" ? "Снимаю видео · " + (vModel === "grok" ? "Grok" : "Seedance")  : "Рисую картинку") + '</p><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">Отправляю запрос…</span><b>0%</b></p></div>';
+b.innerHTML = '<div class="x-gen"><p class="x-gtitle">' + (kind === "video" ? "Снимаю видео · " + VNAMES[vModel] + " · " + (vModel === "grok" ? 6 : vDur) + " сек"  : "Рисую картинку") + '</p><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">Отправляю запрос…</span><b>0%</b></p></div>';
 msgs.appendChild(r); scrollEnd(true);
 var bar = b.querySelector(".x-bar i"), note = b.querySelector(".x-note"), pct = b.querySelector(".x-progline b");
 function prog(p, t) { var v = Math.max(0, Math.min(100, Math.round(Number(p) || 0))); bar.style.width = v + "%"; pct.textContent = v + "%"; if (t) note.textContent = t; }
