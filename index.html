@@ -220,10 +220,76 @@
       body.x-auth .x-panel:not([hidden]) { flex: 1; display: flex; flex-direction: column; }
       body.x-auth #p-chat .x-msgs { flex: 1; max-height: none; min-height: 0; height: 0; }
       body.x-auth #p-chat { min-height: 0; }
-      body.x-auth #chat-form textarea { min-height: 64px; }
       .x-tabs { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
       .x-tabs::-webkit-scrollbar { display: none; }
       .x-tab { flex: none; padding: 0 20px; }
+    
+      /* ===== Chat, app-style ===== */
+      @keyframes x-in { from { opacity: 0; transform: translateY(14px) scale(.98); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+      @keyframes x-fade { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes x-dot { 0%, 80%, 100% { transform: translateY(0); opacity: .35; } 40% { transform: translateY(-5px); opacity: 1; } }
+      @keyframes x-orb { 0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); } 50% { transform: translate(-50%, -50%) scale(1.12) rotate(180deg); } 100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); } }
+      @keyframes x-blink { 50% { opacity: 0; } }
+      @keyframes x-pop { 0% { transform: scale(.6); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+      .x-chat { background: none !important; border: 0 !important; padding: 0 !important; gap: 0 !important; position: relative; }
+      .x-chat .x-msgs { background: none; border: 0; border-radius: 0; padding: 8px 2px 24px; gap: 22px; min-height: 52vh; max-height: none; scroll-behavior: auto; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%); }
+      .x-m { display: flex; gap: 12px; align-items: flex-start; animation: x-in .5s cubic-bezier(.2,.8,.2,1) both; }
+      .x-m--user { justify-content: flex-end; }
+      .x-m--user .x-b { background: #fff; color: #0a0a0b; padding: 12px 18px; border-radius: 22px 22px 6px 22px; max-width: min(78%, 620px); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; line-height: 1.5; box-shadow: 0 8px 28px rgba(255,255,255,.08); }
+      .x-m--bot .x-b { flex: 1; min-width: 0; max-width: 760px; padding-top: 4px; font-size: 16px; line-height: 1.65; color: var(--x-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+      .x-av { flex: none; width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(140deg, #fff, #9a9aa3); color: #0a0a0b; font: 800 15px "Manrope", system-ui, sans-serif; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 6px 18px rgba(255,255,255,.08); }
+      .x-m--typing .x-av { animation: x-pop .5s ease both; }
+      .x-b code { font-family: var(--x-mono); font-size: .9em; background: rgba(255,255,255,.08); border: 1px solid var(--x-line); border-radius: 6px; padding: 1px 6px; }
+      .x-b pre { margin: 10px 0; padding: 14px 16px; background: #0f0f11; border: 1px solid var(--x-line); border-radius: 14px; overflow-x: auto; white-space: pre; }
+      .x-b pre code { background: none; border: 0; padding: 0; font-size: 14px; }
+      .x-dots { display: inline-flex; gap: 5px; padding: 10px 0; }
+      .x-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--x-ink); animation: x-dot 1.2s infinite ease-in-out; }
+      .x-dots i:nth-child(2) { animation-delay: .15s; } .x-dots i:nth-child(3) { animation-delay: .3s; }
+      .x-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: var(--x-ink); border-radius: 2px; animation: x-blink .9s steps(1) infinite; }
+      .x-hello { margin: auto; display: grid; justify-items: center; text-align: center; gap: 10px; padding: 32px 8px; position: relative; isolation: isolate; }
+      .x-orb { position: absolute; left: 50%; top: 42%; width: 260px; height: 260px; border-radius: 50%; z-index: -1; filter: blur(48px); opacity: .32; background: conic-gradient(from 0deg, #ffffff, #6b6b75, #d9d9e0, #3a3a40, #ffffff); animation: x-orb 14s linear infinite; }
+      .x-hello__k { margin: 0; font: 400 13px var(--x-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--x-dim); animation: x-in .6s .05s cubic-bezier(.2,.8,.2,1) both; }
+      .x-hello__t { margin: 0 0 14px; font: 800 clamp(30px, 7vw, 44px)/1.05 "Manrope", system-ui, sans-serif; letter-spacing: -.02em; animation: x-in .7s .12s cubic-bezier(.2,.8,.2,1) both; }
+      .x-sugg { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 560px; }
+      .x-sg { min-height: 44px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--x-line); background: rgba(255,255,255,.03); color: var(--x-ink); font: 500 14px "Manrope", system-ui, sans-serif; cursor: pointer; animation: x-in .55s cubic-bezier(.2,.8,.2,1) both; transition: background .2s, border-color .2s, transform .2s; }
+      .x-sg:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-2px); }
+      .x-sg:active { transform: scale(.97); }
+      .x-composer { position: sticky; bottom: 0; display: grid; gap: 8px; padding: 10px 0 max(12px, env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--x-bg) 70%, transparent); }
+      .x-composer .x-err { margin: 0; text-align: center; }
+      .x-composer .x-err:empty { display: none; }
+      .x-cbox { display: flex; align-items: flex-end; gap: 8px; padding: 8px; border-radius: 28px; background: #141416; border: 1px solid var(--x-line); box-shadow: 0 10px 40px rgba(0,0,0,.5); transition: border-color .25s, box-shadow .25s; }
+      .x-cbox:focus-within { border-color: rgba(255,255,255,.45); box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 0 4px rgba(255,255,255,.06); }
+      .x-cbox textarea { flex: 1; min-width: 0; min-height: 44px; max-height: 180px; resize: none; border: 0; outline: 0; background: transparent; color: var(--x-ink); font: 400 16px/1.5 "Manrope", system-ui, sans-serif; padding: 10px 4px; }
+      .x-cbox textarea::placeholder { color: var(--x-dim); }
+      .x-cicon, .x-send { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; transition: transform .2s cubic-bezier(.2,.8,.2,1), background .2s, color .2s, opacity .2s; }
+      .x-cicon { background: transparent; border: 1px solid var(--x-line); color: var(--x-dim); }
+      .x-cicon:hover { color: var(--x-ink); border-color: rgba(255,255,255,.4); transform: rotate(90deg); }
+      .x-send { border: 0; background: #2a2a2e; color: #77777f; }
+      .x-send.is-on { background: #fff; color: #0a0a0b; animation: x-pop .35s ease; }
+      .x-send:active, .x-cicon:active { transform: scale(.9); }
+      .x-send:disabled { opacity: .5; cursor: progress; }
+      .x-cicon:focus-visible, .x-send:focus-visible, .x-sg:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+      .x-panel:not([hidden]) { animation: x-fade .35s ease both; }
+      .x-tab { transition: background .25s, color .25s, border-color .25s, transform .2s; }
+      .x-tab:active { transform: scale(.96); }
+      body.x-auth #app { animation: x-in .6s cubic-bezier(.2,.8,.2,1) both; }
+      /* signed-in: chat fills the screen */
+      body.x-auth .x-studio { gap: 10px; }
+      body.x-auth #p-chat { min-height: 0; }
+      body.x-auth #p-chat .x-msgs { flex: 1; height: 0; min-height: 0; }
+      body.x-auth .x-tabs { gap: 6px; }
+      body.x-auth .x-tab { min-height: 40px; padding: 0 16px; font-size: 13px; letter-spacing: .08em; }
+      @media (max-width: 640px) {
+        body.x-auth .x-tabs { display: flex; }
+        body.x-auth .x-tab { min-height: 40px; padding: 0 14px; }
+        .x-m--user .x-b { max-width: 86%; }
+        .x-av { width: 28px; height: 28px; font-size: 13px; border-radius: 9px; }
+        .x-m { gap: 10px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .x-m, .x-sg, .x-hello__k, .x-hello__t, .x-panel:not([hidden]), body.x-auth #app, .x-send.is-on { animation: none !important; }
+        .x-orb { animation: none; }
+      }
     </style>
   </head>
   <body>
@@ -268,14 +334,14 @@
                 <button class="x-tab" type="button" role="tab" id="tab-adm" aria-controls="p-adm" aria-selected="false" tabindex="-1" hidden>Заявки</button>
               </div>
 
-              <div class="x-panel" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
-                <div class="x-msgs" id="msgs" role="log" aria-live="polite"><p class="x-empty">Напиши первое сообщение — FLast ответит.</p></div>
-                <form class="x-form" id="chat-form" novalidate>
-                  <label class="x-field"><span>Сообщение</span><textarea name="msg" id="chat-in" rows="3" placeholder="Спроси что угодно…"></textarea></label>
+              <div class="x-panel x-chat" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
+                <div class="x-msgs" id="msgs" role="log" aria-live="polite"></div>
+                <form class="x-composer" id="chat-form" novalidate>
                   <p class="x-err" id="chat-err" role="alert"></p>
-                  <div class="x-crow">
-                    <button class="x-textbtn" type="button" id="chat-new">Новый чат</button>
-                    <button class="x-btn" type="submit" id="chat-send">Отправить <span aria-hidden="true">→</span></button>
+                  <div class="x-cbox">
+                    <button class="x-cicon" type="button" id="chat-new" aria-label="Новый чат" title="Новый чат"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
+                    <textarea name="msg" id="chat-in" rows="1" placeholder="Спроси FLast…" aria-label="Сообщение"></textarea>
+                    <button class="x-send" type="submit" id="chat-send" aria-label="Отправить"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
                   </div>
                 </form>
               </div>
@@ -700,53 +766,95 @@
         var chatErr = document.getElementById("chat-err");
         var chatSend = document.getElementById("chat-send");
         var busy = false;
-        function bubble(role, text, typing) {
-          var d = document.createElement("div");
-          d.className = "x-bubble " + (role === "user" ? "x-bubble--user" : "x-bubble--bot") + (typing ? " x-bubble--typing" : "");
-          d.textContent = text;
-          return d;
+        var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var SUGG = ["Придумай идею для видео", "Объясни что-нибудь простыми словами", "Напиши пост для Telegram", "Помоги с домашкой"];
+        function md(t) {
+          var e = String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          e = e.replace(/```[a-zA-Z0-9]*\n?([\s\S]*?)```/g, function (_, c) { return "<pre><code>" + c.replace(/\n$/, "") + "</code></pre>"; });
+          e = e.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+          e = e.replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
+          e = e.replace(/^#{1,4} (.+)$/gm, "<b>$1</b>");
+          e = e.replace(/^[-*] (.+)$/gm, "• $1");
+          return e;
         }
-        function renderChat() {
+        function scrollEnd(smooth) { msgs.scrollTo({ top: msgs.scrollHeight, behavior: smooth && !reduce ? "smooth" : "auto" }); }
+        function emptyState() {
           msgs.textContent = "";
-          if (!history_.length) {
-            var p = document.createElement("p"); p.className = "x-empty"; p.textContent = "Напиши первое сообщение — FLast ответит.";
-            msgs.appendChild(p); return;
-          }
-          history_.forEach(function (h) { msgs.appendChild(bubble(h.role, h.content)); });
-          msgs.scrollTop = msgs.scrollHeight;
+          var w = document.createElement("div"); w.className = "x-hello";
+          w.innerHTML = '<div class="x-orb" aria-hidden="true"></div><p class="x-hello__k">FLast</p><h3 class="x-hello__t">Чем помочь?</h3><div class="x-sugg"></div>';
+          var box = w.querySelector(".x-sugg");
+          SUGG.forEach(function (t, i) {
+            var b = document.createElement("button"); b.type = "button"; b.className = "x-sg"; b.textContent = t;
+            b.style.animationDelay = (0.25 + i * 0.07) + "s";
+            b.addEventListener("click", function () { chatIn.value = t; autoGrow(); sendChat(); });
+            box.appendChild(b);
+          });
+          msgs.appendChild(w);
         }
+        function row(role) {
+          var r = document.createElement("div"); r.className = "x-m x-m--" + (role === "user" ? "user" : "bot");
+          if (role !== "user") { var av = document.createElement("span"); av.className = "x-av"; av.textContent = "F"; av.setAttribute("aria-hidden", "true"); r.appendChild(av); }
+          var b = document.createElement("div"); b.className = "x-b"; r.appendChild(b);
+          return r;
+        }
+        function addUser(text) {
+          if (msgs.querySelector(".x-hello")) msgs.textContent = "";
+          var r = row("user"); r.lastChild.textContent = text; msgs.appendChild(r); scrollEnd(true); return r;
+        }
+        function addTyping() {
+          var r = row("bot"); r.classList.add("x-m--typing");
+          r.lastChild.innerHTML = '<span class="x-dots"><i></i><i></i><i></i></span>';
+          msgs.appendChild(r); scrollEnd(true); return r;
+        }
+        function reveal(r, text) {
+          r.classList.remove("x-m--typing");
+          var b = r.lastChild, html = md(text);
+          if (reduce || text.length > 4000) { b.innerHTML = html; scrollEnd(false); return; }
+          var words = text.split(/(\s+)/), i = 0, step = Math.max(1, Math.ceil(words.length / 90));
+          b.classList.add("x-b--stream");
+          (function tick() {
+            i = Math.min(words.length, i + step);
+            b.innerHTML = md(words.slice(0, i).join("")) + (i < words.length ? '<span class="x-caret"></span>' : "");
+            var nearEnd = msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 140;
+            if (nearEnd) scrollEnd(false);
+            if (i < words.length) setTimeout(tick, 18); else { b.classList.remove("x-b--stream"); b.innerHTML = html; }
+          })();
+        }
+        function autoGrow() { chatIn.style.height = "auto"; chatIn.style.height = Math.min(chatIn.scrollHeight, 180) + "px"; chatSend.classList.toggle("is-on", !!chatIn.value.trim()); }
+        chatIn.addEventListener("input", autoGrow);
         function sendChat() {
           if (busy) return;
           var text = chatIn.value.trim();
           if (!text) { chatIn.focus(); return; }
           chatErr.textContent = "";
           history_.push({ role: "user", content: text });
-          chatIn.value = "";
-          renderChat();
-          var typing = bubble("assistant", "FLast печатает…", true);
-          msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+          chatIn.value = ""; autoGrow();
+          var ur = addUser(text);
+          var tr = addTyping();
           busy = true; chatSend.disabled = true;
           call("POST", "/api/chat", { messages: history_ }).then(function (res) {
             busy = false; chatSend.disabled = false;
             if (res.ok && res.data && typeof res.data.reply === "string") {
               history_.push({ role: "assistant", content: res.data.reply });
-              renderChat();
+              reveal(tr, res.data.reply);
             } else {
               var last = history_.pop();
-              renderChat();
-              if (!chatIn.value) chatIn.value = last.content;
+              tr.remove(); ur.remove();
+              if (!history_.length) emptyState();
+              if (!chatIn.value) { chatIn.value = last.content; autoGrow(); }
               chatErr.textContent = errText(res, "Не удалось получить ответ, попробуй ещё раз.");
             }
           });
         }
         chatForm.addEventListener("submit", function (e) { e.preventDefault(); sendChat(); });
         chatIn.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendChat(); }
+          if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !matchMedia("(pointer: coarse)").matches) { e.preventDefault(); sendChat(); }
         });
         document.getElementById("chat-new").addEventListener("click", function () {
           if (busy) return;
-          history_ = []; chatErr.textContent = ""; renderChat(); chatIn.focus();
+          history_ = []; chatErr.textContent = ""; emptyState(); chatIn.focus();
         });
+        emptyState();
 
         /* ---------- Image downscale ---------- */
         function readImage(file) {
