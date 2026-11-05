@@ -11,6 +11,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
     />
+    <link rel="icon" href="avatar-s.jpg" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <meta name="theme-color" content="#04110b" />
     <link rel="stylesheet" href="hark.css" />
     <link rel="stylesheet" href="hark-hero.css" />
     <style>
@@ -286,19 +289,159 @@
         .x-av { width: 28px; height: 28px; font-size: 13px; border-radius: 9px; }
         .x-m { gap: 10px; }
       }
-      @media (prefers-reduced-motion: reduce) {
-        .x-m, .x-sg, .x-hello__k, .x-hello__t, .x-panel:not([hidden]), body.x-auth #app, .x-send.is-on { animation: none !important; }
-        .x-orb { animation: none; }
+
+      /* ================= LIQUID GLASS ================= */
+      :root { --x-bg: #030a07; --x-card: rgba(255,255,255,.06); --x-line: rgba(255,255,255,.14); --g-acc: #3dffa0; --g-acc2: #12c27a;
+        --glass: rgba(255,255,255,.075); --glass-2: rgba(255,255,255,.12); --glass-blur: blur(22px) saturate(190%) brightness(1.08);
+        --spring: cubic-bezier(.34,1.56,.64,1); --smooth: cubic-bezier(.2,.8,.2,1); }
+      html, body { background: var(--x-bg); }
+      .x-bg { background: radial-gradient(120% 80% at 50% -10%, #0b3a24 0%, #04140c 45%, var(--x-bg) 80%); overflow: hidden; }
+      .x-bg::before { content: ""; position: absolute; inset: -2px; background-image: linear-gradient(rgba(61,255,160,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(61,255,160,.05) 1px, transparent 1px); background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 10%, transparent 70%); mask-image: radial-gradient(ellipse at 50% 20%, #000 10%, transparent 70%); animation: g-grid 22s linear infinite; }
+      .x-bg::after { background: radial-gradient(ellipse at 50% 120%, rgba(3,10,7,.9), transparent 60%); }
+      .x-bg i { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; mix-blend-mode: screen; will-change: transform; }
+      .x-bg .b1 { width: 60vmax; height: 60vmax; left: -20vmax; top: -18vmax; background: radial-gradient(circle, #1bd389 0%, transparent 62%); animation: g-float1 18s ease-in-out infinite alternate; }
+      .x-bg .b2 { width: 50vmax; height: 50vmax; right: -18vmax; top: 20vh; background: radial-gradient(circle, #0e7d57 0%, transparent 64%); animation: g-float2 24s ease-in-out infinite alternate; }
+      .x-bg .b3 { width: 44vmax; height: 44vmax; left: 10vw; bottom: -24vmax; background: radial-gradient(circle, #2fe0c0 0%, transparent 62%); opacity: .3; animation: g-float3 20s ease-in-out infinite alternate; }
+      @keyframes g-grid { to { background-position: 0 44px, 44px 0; } }
+      @keyframes g-float1 { to { transform: translate(18vw, 14vh) scale(1.15); } }
+      @keyframes g-float2 { to { transform: translate(-16vw, -10vh) scale(.9); } }
+      @keyframes g-float3 { to { transform: translate(20vw, -12vh) scale(1.2); } }
+
+      /* glass recipe */
+      .x-tabs, .x-cbox, .x-menu, .x-sg, .x-card, .x-modal, .x-req, .x-hi, .x-uname, .x-cicon, .x-m--user .x-b, .x-hsearch, .x-hf, .x-file, .x-chip, .x-bar, .x-prev img {
+        background: linear-gradient(135deg, rgba(255,255,255,.13), rgba(255,255,255,.04)) , radial-gradient(120px 80px at var(--mx, 30%) var(--my, 0%), rgba(255,255,255,.14), transparent 70%);
+        -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(255,255,255,.16);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(255,255,255,.05), inset 0 0 22px rgba(255,255,255,.04), 0 10px 30px rgba(0,0,0,.35);
+      }
+      .x-card { position: relative; overflow: hidden; transition: transform .5s var(--spring), box-shadow .4s; }
+      .x-card:hover { transform: translateY(-4px); }
+      .x-modal { background: linear-gradient(160deg, rgba(20,40,30,.75), rgba(8,16,12,.82)); }
+      .x-btn { position: relative; overflow: hidden; background: linear-gradient(180deg, #fff, #dfe9e4); color: #04110b; box-shadow: inset 0 1px 0 #fff, 0 8px 24px rgba(61,255,160,.18); transition: transform .35s var(--spring), box-shadow .3s; }
+      .x-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%); transform: translateX(-120%); animation: g-sheen 4.5s ease-in-out infinite; pointer-events: none; }
+      .x-btn:active { transform: scale(.96); }
+      .x-btn.x-ghost { background: rgba(255,255,255,.06); color: var(--x-ink); }
+      .x-btn.x-ghost::after { display: none; }
+      @keyframes g-sheen { 0%, 60% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+      .x-chip[aria-pressed="true"] { background: rgba(255,255,255,.92); color: #04110b; }
+      .x-bar i { background: linear-gradient(90deg, var(--g-acc2), var(--g-acc)); box-shadow: 0 0 12px var(--g-acc); }
+
+      /* avatar */
+      .x-ava { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.2), 0 6px 20px rgba(61,255,160,.25); animation: g-pop .7s var(--spring) both; }
+      .x-logo:hover .x-ava { transform: rotate(-6deg) scale(1.06); transition: transform .4s var(--spring); }
+
+      /* signed-in shell */
+      body.x-auth .x-top { position: sticky; top: 0; z-index: 30; margin-inline: calc(-1 * var(--gutter, 20px)); padding: 10px var(--gutter, 20px); background: linear-gradient(to bottom, rgba(3,10,7,.75), rgba(3,10,7,.35)); -webkit-backdrop-filter: blur(18px) saturate(180%); backdrop-filter: blur(18px) saturate(180%); border-bottom: 1px solid rgba(255,255,255,.08); animation: g-down .6s var(--smooth) both; }
+      @keyframes g-down { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+      @keyframes g-pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+
+      /* tabs: glass bar with liquid pill */
+      .x-tabs { position: relative; display: flex !important; flex-wrap: nowrap; gap: 2px !important; padding: 4px; border-radius: 999px; overflow-x: auto; scrollbar-width: none; align-self: flex-start; max-width: 100%; animation: x-in .6s .1s var(--smooth) both; }
+      .x-tabs::-webkit-scrollbar { display: none; }
+      .x-tab, body.x-auth .x-tab { position: relative; z-index: 1; flex: none; border: 0 !important; background: transparent !important; color: rgba(255,255,255,.75); min-height: 40px; padding: 0 16px; font-size: 13px; letter-spacing: .06em; transition: color .3s; }
+      .x-tab[aria-selected="true"] { color: #04110b !important; }
+      .x-tabpill { position: absolute; z-index: 0; left: 0; top: 4px; bottom: 4px; width: 0; border-radius: 999px; background: linear-gradient(180deg, #fff, #d8efe3); box-shadow: inset 0 1px 0 #fff, 0 4px 16px rgba(61,255,160,.35); transition: transform .55s var(--spring), width .45s var(--spring); }
+      .x-tabpill.is-squish { animation: g-squish .55s var(--smooth); }
+      @keyframes g-squish { 30% { border-radius: 40% / 999px; filter: blur(.3px); } 100% { border-radius: 999px; } }
+
+      .x-panel:not([hidden]) { animation: g-panel .45s var(--smooth) both; }
+      @keyframes g-panel { from { opacity: 0; transform: translateY(10px) scale(.99); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+      .x-panel:not(.x-chat) { background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 20px 50px rgba(0,0,0,.35); }
+      .x-panel textarea, .x-panel input[type=text], .x-field textarea { background: rgba(0,0,0,.25) !important; border-color: rgba(255,255,255,.14) !important; border-radius: 16px; }
+
+      /* chat */
+      .x-chat .x-msgs { padding-top: 14px; }
+      .x-av { width: 32px; height: 32px; border-radius: 11px; object-fit: cover; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.2), 0 4px 14px rgba(61,255,160,.25); }
+      .x-m--typing .x-av { animation: g-breathe 1.4s ease-in-out infinite; }
+      @keyframes g-breathe { 50% { box-shadow: 0 0 0 2px var(--g-acc), 0 0 22px rgba(61,255,160,.7); transform: scale(1.06); } }
+      .x-m--user .x-b { color: #fff; background: linear-gradient(135deg, rgba(61,255,160,.32), rgba(18,194,122,.18)); border-color: rgba(120,255,200,.35); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 26px rgba(18,194,122,.22); display: grid; gap: 8px; }
+      .x-m--user { animation: g-msg .55s var(--spring) both; transform-origin: 100% 100%; }
+      .x-m--bot { animation: x-in .55s var(--smooth) both; }
+      @keyframes g-msg { from { opacity: 0; transform: translateY(18px) scale(.85); } to { opacity: 1; transform: none; } }
+      .x-bimg { display: block; max-width: 220px; max-height: 260px; border-radius: 14px; object-fit: cover; }
+      .x-dots i { background: var(--g-acc); box-shadow: 0 0 8px var(--g-acc); }
+      .x-caret { background: var(--g-acc); box-shadow: 0 0 8px var(--g-acc); }
+      .x-b code { background: rgba(255,255,255,.08); }
+      .x-b pre { background: rgba(0,0,0,.35); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
+      .x-hello { gap: 14px; }
+      .x-orb { background: conic-gradient(from 0deg, #3dffa0, #0b6b48, #2fe0c0, #063d29, #3dffa0); opacity: .45; }
+      .x-hava { position: relative; width: 112px; height: 112px; border-radius: 32px; padding: 3px; background: conic-gradient(from var(--a, 0deg), #3dffa0, transparent 30%, #2fe0c0 55%, transparent 80%, #3dffa0); animation: g-spin 4s linear infinite, g-pop .8s var(--spring) both; box-shadow: 0 20px 60px rgba(61,255,160,.35); }
+      .x-hava img { width: 100%; height: 100%; border-radius: 29px; object-fit: cover; display: block; animation: g-counter 4s linear infinite; }
+      @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+      @keyframes g-spin { to { --a: 360deg; } }
+      @keyframes g-counter { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+      .x-hello__t { animation: x-in .7s .15s var(--smooth) both; background: linear-gradient(180deg, #fff, #b8f5d6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .x-sg { transition: transform .4s var(--spring), border-color .2s; }
+      .x-sg:hover { transform: translateY(-3px) scale(1.03); }
+
+      /* composer */
+      .x-composer { background: linear-gradient(to top, rgba(3,10,7,.9) 55%, transparent); position: sticky; }
+      .x-cbox { flex-direction: column; align-items: stretch; gap: 6px; border-radius: 30px; padding: 7px; transition: transform .4s var(--spring), box-shadow .3s, border-color .3s; }
+      .x-cbox:focus-within { border-color: rgba(120,255,200,.45); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 0 0 4px rgba(61,255,160,.10), 0 14px 40px rgba(0,0,0,.45); }
+      .x-crow2 { display: flex; align-items: flex-end; gap: 8px; }
+      .x-cicon { color: #fff; transition: transform .45s var(--spring), background .3s; }
+      .x-cicon:hover { transform: none; }
+      .x-cicon.is-open { transform: rotate(135deg); background: rgba(255,255,255,.9); color: #04110b; }
+      .x-send { background: rgba(255,255,255,.1); color: rgba(255,255,255,.5); }
+      .x-send.is-on { background: radial-gradient(circle at 30% 25%, #b9ffdf, var(--g-acc) 55%, var(--g-acc2)); color: #04110b; box-shadow: 0 6px 20px rgba(61,255,160,.5), inset 0 1px 0 rgba(255,255,255,.7); animation: g-pop .45s var(--spring); }
+      .x-att { position: relative; width: 76px; height: 76px; margin: 2px 0 0 4px; }
+      .x-att img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; border: 1px solid rgba(255,255,255,.25); }
+      .x-att--in { animation: g-pop .5s var(--spring) both; }
+      .x-attx { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: rgba(10,20,15,.85); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+      .x-menu { position: absolute; left: 0; bottom: calc(100% - 4px); z-index: 20; display: grid; gap: 2px; min-width: 260px; padding: 6px; border-radius: 24px; background: linear-gradient(160deg, rgba(30,60,45,.7), rgba(8,18,13,.75)); transform-origin: 22px 100%; opacity: 0; transform: scale(.6) translateY(10px); filter: blur(6px); transition: opacity .25s, transform .45s var(--spring), filter .3s; }
+      .x-menu.is-open { opacity: 1; transform: none; filter: none; }
+      .x-menu[hidden] { display: none; }
+      .x-menu button { display: flex; align-items: center; gap: 12px; padding: 10px 12px; min-height: 52px; border: 0; border-radius: 18px; background: transparent; color: #fff; text-align: left; font: 500 15px "Manrope", system-ui, sans-serif; cursor: pointer; transition: background .2s, transform .3s var(--spring); }
+      .x-menu button:hover, .x-menu button:focus-visible { background: rgba(255,255,255,.1); outline: none; }
+      .x-menu button:active { transform: scale(.97); }
+      .x-menu.is-open button { animation: x-in .4s var(--smooth) both; }
+      .x-menu.is-open button:nth-child(2) { animation-delay: .03s; } .x-menu.is-open button:nth-child(3) { animation-delay: .06s; } .x-menu.is-open button:nth-child(4) { animation-delay: .09s; } .x-menu.is-open button:nth-child(5) { animation-delay: .12s; }
+      .x-menu b { display: block; font-weight: 700; } .x-menu small { display: block; color: rgba(255,255,255,.6); font-size: 12.5px; }
+      .x-mi { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px; background: rgba(255,255,255,.1); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); font-size: 18px; }
+
+      /* history */
+      .x-hhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+      .x-hf { display: inline-flex; gap: 2px; padding: 4px; border-radius: 999px; }
+      .x-hfb { min-height: 36px; padding: 0 14px; border-radius: 999px; border: 0; background: transparent; color: rgba(255,255,255,.75); font: 600 13px "Manrope", system-ui, sans-serif; cursor: pointer; transition: background .3s, color .3s; }
+      .x-hfb[aria-pressed="true"] { background: #fff; color: #04110b; }
+      .x-hsearch { width: 100%; box-sizing: border-box; min-height: 48px; padding: 0 18px; border-radius: 999px; color: #fff; font: 400 15px "Manrope", system-ui, sans-serif; outline: none; }
+      .x-hsearch:focus { border-color: rgba(120,255,200,.5); }
+      .x-hlist { display: grid; align-content: start; gap: 10px; max-height: 64vh; overflow-y: auto; padding: 2px; }
+      body.x-auth #p-hist .x-hlist { flex: 1; max-height: none; height: 0; min-height: 200px; }
+      .x-hday { margin: 8px 4px 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+      .x-hi { padding: 14px 16px; border-radius: 20px; animation: x-in .45s var(--smooth) both; }
+      .x-hi p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+      .x-hi:active p, .x-hi:focus-within p { -webkit-line-clamp: unset; }
+      .x-hil { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+      .x-hil b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .x-hil time { color: rgba(255,255,255,.55); font-size: 13px; }
+      .x-hk { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: rgba(61,255,160,.18); color: #9dffd0; }
+      .x-hk--video { background: rgba(120,160,255,.2); color: #c3d3ff; } .x-hk--image { background: rgba(255,180,90,.2); color: #ffd8a6; }
+
+      .x-cbox textarea { background: transparent !important; border: 0 !important; border-radius: 0; }
+      .x-hhead { flex-wrap: nowrap; }
+      .x-hr:active svg { transform: rotate(-180deg); transition: transform .4s var(--spring); }
+      .x-mi { color: #b9ffdf; }
+      .x-hr.is-spin svg { animation: g-rot .7s var(--smooth); } @keyframes g-rot { to { transform: rotate(360deg); } }
+      .x-hph { font-size: 12px; font-weight: 700; color: #9dffd0; border: 1px solid rgba(61,255,160,.35); border-radius: 999px; padding: 1px 7px; margin-right: 4px; }
+      /* landing reveal */
+      .x-hero > * { animation: x-in .8s var(--smooth) both; }
+      .x-hero > *:nth-child(2) { animation-delay: .08s; } .x-hero > *:nth-child(3) { animation-delay: .16s; } .x-hero > *:nth-child(4) { animation-delay: .24s; } .x-hero > *:nth-child(5) { animation-delay: .32s; }
+      @media (max-width: 640px) {
+        .x-menu { min-width: 0; right: 0; }
+        .x-tab, body.x-auth .x-tab { padding: 0 14px; }
+        .x-bg i { filter: blur(56px); }
       }
     </style>
   </head>
   <body>
-    <div class="x-bg" aria-hidden="true"></div>
+    <div class="x-bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
     <div class="page" id="top">
       <div class="x-wrap">
         <header class="x-top">
           <a class="x-logo" href="#top" aria-label="FLast — на главную">
-            <span class="x-tile"><i></i></span>
+            <img class="x-ava" src="avatar-s.jpg" alt="" width="44" height="44" />
             <span class="x-word"><b>FLast</b><small>ИИ-компаньон</small></span>
           </a>
           <div class="x-topr">
@@ -332,16 +475,30 @@
                 <button class="x-tab" type="button" role="tab" id="tab-video" aria-controls="p-video" aria-selected="false" tabindex="-1">Видео</button>
                 <button class="x-tab" type="button" role="tab" id="tab-photo" aria-controls="p-photo" aria-selected="false" tabindex="-1">Фото</button>
                 <button class="x-tab" type="button" role="tab" id="tab-adm" aria-controls="p-adm" aria-selected="false" tabindex="-1" hidden>Заявки</button>
+                <button class="x-tab" type="button" role="tab" id="tab-hist" aria-controls="p-hist" aria-selected="false" tabindex="-1" hidden>История</button>
+                <span class="x-tabpill" aria-hidden="true"></span>
               </div>
 
               <div class="x-panel x-chat" id="p-chat" role="tabpanel" aria-labelledby="tab-chat">
                 <div class="x-msgs" id="msgs" role="log" aria-live="polite"></div>
                 <form class="x-composer" id="chat-form" novalidate>
                   <p class="x-err" id="chat-err" role="alert"></p>
+                  <div class="x-menu" id="chat-menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-act="photo"><span class="x-mi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg></span><span><b>Фото</b><small>Приложить к сообщению</small></span></button>
+                    <button type="button" role="menuitem" data-act="camera"><span class="x-mi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span><b>Камера</b><small>Сфоткать и отправить</small></span></button>
+                    <button type="button" role="menuitem" data-act="video"><span class="x-mi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg></span><span><b>Оживить фото</b><small>Сделать видео из снимка</small></span></button>
+                    <button type="button" role="menuitem" data-act="edit"><span class="x-mi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg></span><span><b>Изменить фото</b><small>Нейросеть перерисует</small></span></button>
+                    <button type="button" role="menuitem" data-act="new"><span class="x-mi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg></span><span><b>Новый чат</b><small>Начать с чистого листа</small></span></button>
+                  </div>
+                  <input type="file" id="chat-file" accept="image/*" hidden />
+                  <input type="file" id="chat-cam" accept="image/*" capture="environment" hidden />
                   <div class="x-cbox">
-                    <button class="x-cicon" type="button" id="chat-new" aria-label="Новый чат" title="Новый чат"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
-                    <textarea name="msg" id="chat-in" rows="1" placeholder="Спроси FLast…" aria-label="Сообщение"></textarea>
-                    <button class="x-send" type="submit" id="chat-send" aria-label="Отправить"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+                    <div class="x-att" id="chat-att" hidden><img alt="Приложенное фото" /><button type="button" class="x-attx" aria-label="Убрать фото">×</button></div>
+                    <div class="x-crow2">
+                      <button class="x-cicon" type="button" id="chat-plus" aria-label="Добавить" aria-haspopup="menu" aria-expanded="false" aria-controls="chat-menu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
+                      <textarea name="msg" id="chat-in" rows="1" placeholder="Спроси FLast…" aria-label="Сообщение"></textarea>
+                      <button class="x-send" type="submit" id="chat-send" aria-label="Отправить"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -392,6 +549,20 @@
                   <div class="x-prog" hidden aria-live="polite"><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">В очереди…</span><b>0%</b></p></div>
                   <div class="x-result" hidden></div>
                 </form>
+              </div>
+
+              <div class="x-panel" id="p-hist" role="tabpanel" aria-labelledby="tab-hist" hidden>
+                <div class="x-hhead">
+                  <div class="x-hf" role="group" aria-label="Фильтр">
+                    <button class="x-hfb" type="button" data-f="all" aria-pressed="true">Все</button>
+                    <button class="x-hfb" type="button" data-f="chat" aria-pressed="false">Чат</button>
+                    <button class="x-hfb" type="button" data-f="video" aria-pressed="false">Видео</button>
+                    <button class="x-hfb" type="button" data-f="image" aria-pressed="false">Фото</button>
+                  </div>
+                  <button class="x-cicon x-hr" type="button" id="hist-refresh" aria-label="Обновить" title="Обновить"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5"/></svg></button>
+                </div>
+                <input class="x-hsearch" id="hist-q" type="search" placeholder="Поиск по запросам и именам" aria-label="Поиск" />
+                <div class="x-hlist" id="hist-list"><p class="x-empty">Загружаю историю…</p></div>
               </div>
 
               <div class="x-panel" id="p-adm" role="tabpanel" aria-labelledby="tab-adm" hidden>
@@ -471,7 +642,7 @@
 
         <footer class="x-foot">
           <a class="x-logo" href="#top" aria-label="FLast — наверх">
-            <span class="x-tile"><i></i></span>
+            <img class="x-ava" src="avatar-s.jpg" alt="" width="44" height="44" />
             <span class="x-word"><b>FLast</b></span>
           </a>
           <p class="x-mail">[ FLASTAI.GITHUB.IO ]</p>
@@ -649,6 +820,8 @@
         function logoutSoft() { clearKey(); setGuest(); }
         function setAuthed(name, admin) {
           document.getElementById("tab-adm").hidden = !admin;
+          document.getElementById("tab-hist").hidden = !admin;
+          setTimeout(function () { movePill(true); }, 30);
           if (admin) loadAdm();
           authed = true;
           document.body.classList.add("x-auth");
@@ -713,6 +886,16 @@
 
         /* ---------- Tabs ---------- */
         var tabs = Array.prototype.slice.call(document.querySelectorAll(".x-tab"));
+        var tabBar = document.querySelector(".x-tabs"), tabPill = document.querySelector(".x-tabpill");
+        function movePill(instant) {
+          var t = tabs.filter(function (o) { return o.getAttribute("aria-selected") === "true"; })[0];
+          if (!t || !tabPill || !t.offsetWidth) return;
+          if (instant) tabPill.style.transition = "none";
+          tabPill.style.width = t.offsetWidth + "px";
+          tabPill.style.transform = "translateX(" + t.offsetLeft + "px)";
+          tabPill.classList.remove("is-squish"); void tabPill.offsetWidth; if (!instant) tabPill.classList.add("is-squish");
+          if (instant) { void tabPill.offsetWidth; tabPill.style.transition = ""; }
+        }
         function selectTab(t, focus) {
           tabs.forEach(function (o) {
             var on = o === t;
@@ -720,15 +903,55 @@
             o.tabIndex = on ? 0 : -1;
             document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
           });
+          movePill(false);
+          if (tabBar && tabBar.scrollTo) tabBar.scrollTo({ left: t.offsetLeft - (tabBar.clientWidth - t.offsetWidth) / 2, behavior: "smooth" });
+          if (t.id === "tab-hist") loadHist();
           if (focus) t.focus();
         }
+        window.addEventListener("resize", function () { movePill(true); });
         tabs.forEach(function (t, i) {
           t.addEventListener("click", function () { selectTab(t); });
           t.addEventListener("keydown", function (e) {
-            if (e.key === "ArrowRight") selectTab(tabs[(i + 1) % tabs.length], true);
-            if (e.key === "ArrowLeft") selectTab(tabs[(i + tabs.length - 1) % tabs.length], true);
+            var vis = tabs.filter(function (o) { return !o.hidden; }), j = vis.indexOf(t);
+            if (e.key === "ArrowRight") selectTab(vis[(j + 1) % vis.length], true);
+            if (e.key === "ArrowLeft") selectTab(vis[(j + vis.length - 1) % vis.length], true);
           });
         });
+
+        /* ---------- History (owner only) ---------- */
+        var histList = document.getElementById("hist-list"), histItems = [], histF = "all";
+        var KIND = { chat: "Чат", video: "Видео", image: "Фото" };
+        function drawHist() {
+          var q = (document.getElementById("hist-q").value || "").toLowerCase().trim();
+          var it = histItems.filter(function (i) {
+            return (histF === "all" || i.kind === histF) && (!q || (i.text + " " + i.name).toLowerCase().indexOf(q) >= 0);
+          });
+          if (!it.length) { histList.innerHTML = '<p class="x-empty">' + (histItems.length ? "Ничего не нашлось." : "Запросов пока нет.") + "</p>"; return; }
+          var lastDay = "";
+          histList.innerHTML = it.map(function (i, n) {
+            var d = new Date(i.t * 1000);
+            var day = d.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+            var head = day !== lastDay ? '<p class="x-hday">' + esc(day) + "</p>" : "";
+            lastDay = day;
+            return head + '<div class="x-hi" style="animation-delay:' + Math.min(n, 12) * 0.035 + 's"><div class="x-hil"><span class="x-hk x-hk--' + esc(i.kind) + '">' + (KIND[i.kind] || esc(i.kind)) + '</span><b>' + esc(i.name) + (i.admin ? " · ты" : "") + '</b><time>' + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }) + "</time></div><p>" + (i.img ? '<span class="x-hph">+ фото</span> ' : "") + esc(i.text || "(без текста)") + "</p></div>";
+          }).join("");
+        }
+        function loadHist() {
+          var hr = document.getElementById("hist-refresh"); hr.classList.add("is-spin"); setTimeout(function () { hr.classList.remove("is-spin"); }, 700);
+          call("GET", "/api/admin/history").then(function (res) {
+            if (res.status !== 200) { histList.innerHTML = '<p class="x-empty">' + esc(errText(res, "Не удалось загрузить")) + "</p>"; return; }
+            histItems = res.data.items || []; drawHist();
+          });
+        }
+        document.querySelectorAll(".x-hfb").forEach(function (b) {
+          b.addEventListener("click", function () {
+            histF = b.getAttribute("data-f");
+            document.querySelectorAll(".x-hfb").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+            drawHist();
+          });
+        });
+        document.getElementById("hist-q").addEventListener("input", drawHist);
+        document.getElementById("hist-refresh").addEventListener("click", loadHist);
 
         /* ---------- Admin ---------- */
         var admList = document.getElementById("adm-list");
@@ -765,8 +988,10 @@
         var chatIn = document.getElementById("chat-in");
         var chatErr = document.getElementById("chat-err");
         var chatSend = document.getElementById("chat-send");
+        var chatPlus = document.getElementById("chat-plus"), chatMenu = document.getElementById("chat-menu");
+        var chatFile = document.getElementById("chat-file"), chatCam = document.getElementById("chat-cam");
+        var att = document.getElementById("chat-att"), attImg = null, fileMode = "chat";
         var busy = false;
-        var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
         var SUGG = ["Придумай идею для видео", "Объясни что-нибудь простыми словами", "Напиши пост для Telegram", "Помоги с домашкой"];
         function md(t) {
           var e = String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -777,15 +1002,15 @@
           e = e.replace(/^[-*] (.+)$/gm, "• $1");
           return e;
         }
-        function scrollEnd(smooth) { msgs.scrollTo({ top: msgs.scrollHeight, behavior: smooth && !reduce ? "smooth" : "auto" }); }
+        function scrollEnd(smooth) { msgs.scrollTo({ top: msgs.scrollHeight, behavior: smooth ? "smooth" : "auto" }); }
         function emptyState() {
           msgs.textContent = "";
           var w = document.createElement("div"); w.className = "x-hello";
-          w.innerHTML = '<div class="x-orb" aria-hidden="true"></div><p class="x-hello__k">FLast</p><h3 class="x-hello__t">Чем помочь?</h3><div class="x-sugg"></div>';
+          w.innerHTML = '<div class="x-orb" aria-hidden="true"></div><div class="x-hava"><img src="avatar.jpg" alt="FLast" /></div><h3 class="x-hello__t">Чем помочь?</h3><div class="x-sugg"></div>';
           var box = w.querySelector(".x-sugg");
           SUGG.forEach(function (t, i) {
             var b = document.createElement("button"); b.type = "button"; b.className = "x-sg"; b.textContent = t;
-            b.style.animationDelay = (0.25 + i * 0.07) + "s";
+            b.style.animationDelay = (0.3 + i * 0.08) + "s";
             b.addEventListener("click", function () { chatIn.value = t; autoGrow(); sendChat(); });
             box.appendChild(b);
           });
@@ -793,13 +1018,16 @@
         }
         function row(role) {
           var r = document.createElement("div"); r.className = "x-m x-m--" + (role === "user" ? "user" : "bot");
-          if (role !== "user") { var av = document.createElement("span"); av.className = "x-av"; av.textContent = "F"; av.setAttribute("aria-hidden", "true"); r.appendChild(av); }
+          if (role !== "user") { var av = document.createElement("img"); av.className = "x-av"; av.src = "avatar-s.jpg"; av.alt = ""; r.appendChild(av); }
           var b = document.createElement("div"); b.className = "x-b"; r.appendChild(b);
           return r;
         }
-        function addUser(text) {
+        function addUser(text, img) {
           if (msgs.querySelector(".x-hello")) msgs.textContent = "";
-          var r = row("user"); r.lastChild.textContent = text; msgs.appendChild(r); scrollEnd(true); return r;
+          var r = row("user"), b = r.lastChild;
+          if (img) { var im = document.createElement("img"); im.className = "x-bimg"; im.src = img; im.alt = "Фото"; b.appendChild(im); }
+          if (text) { var sp = document.createElement("span"); sp.textContent = text; b.appendChild(sp); }
+          msgs.appendChild(r); scrollEnd(true); return r;
         }
         function addTyping() {
           var r = row("bot"); r.classList.add("x-m--typing");
@@ -809,30 +1037,42 @@
         function reveal(r, text) {
           r.classList.remove("x-m--typing");
           var b = r.lastChild, html = md(text);
-          if (reduce || text.length > 4000) { b.innerHTML = html; scrollEnd(false); return; }
-          var words = text.split(/(\s+)/), i = 0, step = Math.max(1, Math.ceil(words.length / 90));
-          b.classList.add("x-b--stream");
+          if (text.length > 5000) { b.innerHTML = html; scrollEnd(false); return; }
+          var words = text.split(/(\s+)/), i = 0, step = Math.max(1, Math.ceil(words.length / 110));
           (function tick() {
             i = Math.min(words.length, i + step);
             b.innerHTML = md(words.slice(0, i).join("")) + (i < words.length ? '<span class="x-caret"></span>' : "");
-            var nearEnd = msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 140;
-            if (nearEnd) scrollEnd(false);
-            if (i < words.length) setTimeout(tick, 18); else { b.classList.remove("x-b--stream"); b.innerHTML = html; }
+            if (msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 160) scrollEnd(false);
+            if (i < words.length) setTimeout(tick, 16); else b.innerHTML = html;
           })();
         }
-        function autoGrow() { chatIn.style.height = "auto"; chatIn.style.height = Math.min(chatIn.scrollHeight, 180) + "px"; chatSend.classList.toggle("is-on", !!chatIn.value.trim()); }
+        function autoGrow() { chatIn.style.height = "auto"; chatIn.style.height = Math.min(chatIn.scrollHeight, 180) + "px"; chatSend.classList.toggle("is-on", !!(chatIn.value.trim() || attImg)); }
         chatIn.addEventListener("input", autoGrow);
+        function setAtt(url) {
+          attImg = url;
+          att.hidden = !url;
+          if (url) { att.querySelector("img").src = url; att.classList.remove("x-att--in"); void att.offsetWidth; att.classList.add("x-att--in"); }
+          autoGrow();
+        }
+        att.querySelector(".x-attx").addEventListener("click", function () { setAtt(null); });
+        function payload() {
+          return history_.map(function (h, i) {
+            if (h.img && i === history_.length - 1) return { role: h.role, content: [{ type: "text", text: h.content }, { type: "image_url", image_url: { url: h.img } }] };
+            return { role: h.role, content: h.content + (h.img ? " [фото]" : "") };
+          });
+        }
         function sendChat() {
           if (busy) return;
           var text = chatIn.value.trim();
-          if (!text) { chatIn.focus(); return; }
+          if (!text && !attImg) { chatIn.focus(); return; }
           chatErr.textContent = "";
-          history_.push({ role: "user", content: text });
-          chatIn.value = ""; autoGrow();
-          var ur = addUser(text);
+          var img = attImg;
+          history_.push({ role: "user", content: text, img: img });
+          chatIn.value = ""; setAtt(null);
+          var ur = addUser(text, img);
           var tr = addTyping();
           busy = true; chatSend.disabled = true;
-          call("POST", "/api/chat", { messages: history_ }).then(function (res) {
+          call("POST", "/api/chat", { messages: payload() }).then(function (res) {
             busy = false; chatSend.disabled = false;
             if (res.ok && res.data && typeof res.data.reply === "string") {
               history_.push({ role: "assistant", content: res.data.reply });
@@ -841,7 +1081,8 @@
               var last = history_.pop();
               tr.remove(); ur.remove();
               if (!history_.length) emptyState();
-              if (!chatIn.value) { chatIn.value = last.content; autoGrow(); }
+              if (!chatIn.value) chatIn.value = last.content;
+              if (last.img) setAtt(last.img); else autoGrow();
               chatErr.textContent = errText(res, "Не удалось получить ответ, попробуй ещё раз.");
             }
           });
@@ -850,11 +1091,48 @@
         chatIn.addEventListener("keydown", function (e) {
           if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !matchMedia("(pointer: coarse)").matches) { e.preventDefault(); sendChat(); }
         });
-        document.getElementById("chat-new").addEventListener("click", function () {
-          if (busy) return;
-          history_ = []; chatErr.textContent = ""; emptyState(); chatIn.focus();
+        /* + menu */
+        function menu(open) {
+          if (open === undefined) open = chatMenu.hidden;
+          if (open) { chatMenu.hidden = false; void chatMenu.offsetWidth; chatMenu.classList.add("is-open"); }
+          else { chatMenu.classList.remove("is-open"); setTimeout(function () { if (!chatMenu.classList.contains("is-open")) chatMenu.hidden = true; }, 220); }
+          chatPlus.setAttribute("aria-expanded", open ? "true" : "false");
+          chatPlus.classList.toggle("is-open", open);
+        }
+        chatPlus.addEventListener("click", function (e) { e.stopPropagation(); menu(); });
+        document.addEventListener("click", function (e) { if (!chatMenu.hidden && !chatMenu.contains(e.target)) menu(false); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !chatMenu.hidden) { menu(false); chatPlus.focus(); } });
+        chatMenu.addEventListener("click", function (e) {
+          var b = e.target.closest("button[data-act]"); if (!b) return;
+          var act = b.getAttribute("data-act"); menu(false);
+          if (act === "new") { if (busy) return; history_ = []; chatErr.textContent = ""; setAtt(null); emptyState(); chatIn.focus(); return; }
+          fileMode = act === "camera" ? "chat" : act;
+          (act === "camera" ? chatCam : chatFile).click();
         });
+        function onPick(inp) {
+          var f = inp.files && inp.files[0]; inp.value = "";
+          if (!f) return;
+          readImage(f).then(function (url) {
+            if (fileMode === "video" || fileMode === "edit") {
+              var form = document.querySelector('[data-gen="' + (fileMode === "video" ? "video" : "image") + '"]');
+              if (form && form._setImage) form._setImage(url, f.name);
+              selectTab(document.getElementById(fileMode === "video" ? "tab-video" : "tab-photo"));
+              var ta = form && form.querySelector("textarea"); if (ta) setTimeout(function () { ta.focus(); }, 350);
+            } else { setAtt(url); chatIn.focus(); }
+          }, function () { chatErr.textContent = "Не удалось прочитать фото, выбери другое."; });
+        }
+        chatFile.addEventListener("change", function () { onPick(chatFile); });
+        chatCam.addEventListener("change", function () { onPick(chatCam); });
         emptyState();
+
+        /* glass light follows the finger */
+        document.addEventListener("pointermove", function (e) {
+          var g = e.target.closest && e.target.closest(".x-cbox, .x-tabs, .x-menu, .x-sg, .x-card");
+          if (!g) return;
+          var r = g.getBoundingClientRect();
+          g.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+          g.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+        }, { passive: true });
 
         /* ---------- Image downscale ---------- */
         function readImage(file) {
@@ -912,6 +1190,12 @@
               prev.hidden = false;
             }, function () { image = null; prev.hidden = true; gErr.textContent = "Не удалось прочитать фото, выбери другое."; });
           });
+          gf._setImage = function (url, name) {
+            image = url; gErr.textContent = "";
+            prev.querySelector("img").src = url;
+            prev.querySelector("span").textContent = name || "фото";
+            prev.hidden = false;
+          };
           prev.querySelector(".x-close").addEventListener("click", function () {
             image = null; fileIn.value = ""; prev.hidden = true; prev.querySelector("img").removeAttribute("src");
           });
