@@ -475,9 +475,26 @@ var me = { name: "", nick: "", verified: false, ava: "", admin: false };
 var VER = '<svg class="x-ver" viewBox="0 0 24 24" width="16" height="16" aria-label="Подтверждён"><path fill="url(#vg)" d="M12 1.5l2.6 2 3.3-.3 1 3.1 2.8 1.8-1 3.1 1 3.1-2.8 1.8-1 3.1-3.3-.3-2.6 2-2.6-2-3.3.3-1-3.1L2.3 15.6l1-3.1-1-3.1 2.8-1.8 1-3.1 3.3.3z"/><path d="M8 12.3l2.7 2.7L16.2 9.5" fill="none" stroke="#04110b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function setMe(d) { me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); }
 function avaHTML(url, label) {
-if (url) return '<img src="' + esc(api + url) + '" alt="" />';
+if (url) { var c = avaCache[url]; return c && c.u ? '<img src="' + c.u + '" alt="" />' : '<img data-ava="' + esc(url) + '" alt="" />'; }
 return '<i>' + esc(((label || "?").trim()[0] || "?").toUpperCase()) + "</i>";
 }
+var avaCache = {};
+function loadAva(url) {
+if (!avaCache[url]) {
+avaCache[url] = { p: fetch(api + url, { headers: { "ngrok-skip-browser-warning": "1" } })
+.then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+.then(function (b) { avaCache[url].u = URL.createObjectURL(b); return avaCache[url].u; }) };
+avaCache[url].p.catch(function () { delete avaCache[url]; });
+}
+return avaCache[url].p;
+}
+function hydrateAva(root) {
+(root || document).querySelectorAll("img[data-ava]").forEach(function (im) {
+var url = im.getAttribute("data-ava"); im.removeAttribute("data-ava");
+loadAva(url).then(function (u) { im.src = u; }, function () { im.remove(); });
+});
+}
+new MutationObserver(function () { hydrateAva(); }).observe(document.body, { childList: true, subtree: true });
 function meLabel() { return me.nick || me.name || "Ты"; }
 function drawMe() {
 var u = document.getElementById("uname");
