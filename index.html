@@ -16,7 +16,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <meta name="theme-color" content="#04110b" />
 <link rel="stylesheet" href="hark.css" />
 <link rel="stylesheet" href="hark-hero.css" />
-<link rel="stylesheet" href="flast.css?v=5" />
+<link rel="stylesheet" href="flast.css?v=6" />
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7dffc8"/><stop offset="1" stop-color="#1fb8ff"/></linearGradient></defs></svg>
@@ -74,6 +74,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <input type="file" id="chat-file" accept="image/*" hidden />
 <input type="file" id="chat-cam" accept="image/*" capture="environment" hidden />
 <div class="x-cbox">
+<div class="x-offban" id="svc-ban" hidden>Сервис временно отключён владельцем. Загляни чуть позже.</div>
 <div class="x-mode" id="chat-mode" hidden>
 <span class="x-mtag" id="chat-mtag"></span>
 <div class="x-rat" id="chat-rat" role="group" aria-label="Формат"><button type="button" data-r="9:16" aria-pressed="true">9:16</button><button type="button" data-r="16:9" aria-pressed="false">16:9</button><button type="button" data-r="1:1" aria-pressed="false">1:1</button></div>
@@ -240,6 +241,9 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <p class="x-err" id="prof-err" role="alert"></p>
 <button class="x-btn" type="button" id="prof-save">Сохранить</button>
 <div class="x-pver" id="prof-admin" hidden>
+<p class="x-pvt">Сервис</p>
+<button class="x-btn x-svc" type="button" id="svc-btn">Отключить сервис</button>
+<p class="x-err" id="svc-msg" role="status"></p>
 <p class="x-pvt">Галочка по нику</p>
 <div class="x-pvrow"><input id="ver-nick" type="text" maxlength="12" placeholder="Ник" autocomplete="off" autocapitalize="off" spellcheck="false" /><button class="x-btn" type="button" id="ver-on">Выдать</button><button class="x-btn x-ghost" type="button" id="ver-off">Снять</button></div>
 <p class="x-err" id="ver-msg" role="status"></p>
@@ -473,7 +477,15 @@ else setOffline();
 /* ---------- Profile ---------- */
 var me = { name: "", nick: "", verified: false, ava: "", admin: false };
 var VER = '<svg class="x-ver" viewBox="0 0 24 24" width="16" height="16" aria-label="Подтверждён"><path fill="url(#vg)" d="M12 1.5l2.6 2 3.3-.3 1 3.1 2.8 1.8-1 3.1 1 3.1-2.8 1.8-1 3.1-3.3-.3-2.6 2-2.6-2-3.3.3-1-3.1L2.3 15.6l1-3.1-1-3.1 2.8-1.8 1-3.1 3.3.3z"/><path d="M8 12.3l2.7 2.7L16.2 9.5" fill="none" stroke="#04110b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-function setMe(d) { me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); }
+var svcOff = false;
+function drawSvc() {
+var btn = document.getElementById("svc-btn");
+btn.textContent = svcOff ? "Включить сервис" : "Отключить сервис";
+btn.classList.toggle("x-svc--off", svcOff);
+document.getElementById("svc-msg").textContent = svcOff ? "Сейчас сервис выключен для всех, кроме тебя." : "";
+document.getElementById("svc-ban").hidden = !(svcOff && !me.admin);
+}
+function setMe(d) { if ("service_off" in d) { svcOff = !!d.service_off; setTimeout(drawSvc, 0); } me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); }
 function avaHTML(url, label) {
 if (url) { var c = avaCache[url]; return c && c.u ? '<img src="' + c.u + '" alt="" />' : '<img data-ava="' + esc(url) + '" alt="" />'; }
 return '<i>' + esc(((label || "?").trim()[0] || "?").toUpperCase()) + "</i>";
@@ -550,6 +562,16 @@ m.textContent = (on ? "Галочка выдана: " : "Галочка снят
 if (me.nick && res.data.nick.toLowerCase() === me.nick.toLowerCase()) { me.verified = on; drawMe(); }
 });
 }
+document.getElementById("svc-btn").addEventListener("click", function () {
+var b = this, want = !svcOff;
+if (want && !confirm("Отключить сервис для всех, кроме тебя?")) return;
+b.disabled = true;
+call("POST", "/api/admin/service", { off: want }).then(function (res) {
+b.disabled = false;
+if (!res.ok) { document.getElementById("svc-msg").textContent = errText(res, "Не получилось."); return; }
+svcOff = !!res.data.service_off; drawSvc();
+});
+});
 document.getElementById("ver-on").addEventListener("click", function () { verify(true); });
 document.getElementById("ver-off").addEventListener("click", function () { verify(false); });
 function squareImage(file, size) {
