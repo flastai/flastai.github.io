@@ -16,7 +16,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <meta name="theme-color" content="#04110b" />
 <link rel="stylesheet" href="hark.css" />
 <link rel="stylesheet" href="hark-hero.css" />
-<link rel="stylesheet" href="flast.css?v=4" />
+<link rel="stylesheet" href="flast.css?v=5" />
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7dffc8"/><stop offset="1" stop-color="#1fb8ff"/></linearGradient></defs></svg>
@@ -78,6 +78,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <span class="x-mtag" id="chat-mtag"></span>
 <div class="x-rat" id="chat-rat" role="group" aria-label="Формат"><button type="button" data-r="9:16" aria-pressed="true">9:16</button><button type="button" data-r="16:9" aria-pressed="false">16:9</button><button type="button" data-r="1:1" aria-pressed="false">1:1</button></div>
 <button type="button" class="x-mx" id="chat-mx" aria-label="Обычный чат">×</button>
+<div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="5">5 сек</option><option value="4">4 сек</option><option value="6">6 сек</option><option value="8">8 сек</option><option value="10">10 сек</option><option value="12">12 сек</option></select></div>
 </div>
 <div class="x-att" id="chat-att" hidden><img alt="Приложенное фото" /><button type="button" class="x-attx" aria-label="Убрать фото">×</button></div>
 <div class="x-crow2">
@@ -91,6 +92,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <div class="x-panel" id="p-video" role="tabpanel" aria-labelledby="tab-video" hidden>
 <form class="x-form" data-gen="video" novalidate>
 <label class="x-field"><span>Опиши видео</span><textarea name="prompt" rows="4" placeholder="Например: кот в очках едет на скейте по ночному городу"></textarea></label>
+<div class="x-field"><span>Модель и длительность</span><div class="x-vopt"><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="5">5 сек</option><option value="4">4 сек</option><option value="6">6 сек</option><option value="8">8 сек</option><option value="10">10 сек</option><option value="12">12 сек</option></select></div></div>
 <div class="x-field"><span>Формат</span>
 <div class="x-chips" role="group" aria-label="Соотношение сторон">
 <button class="x-chip" type="button" data-ratio="9:16" aria-pressed="true">9:16</button>
@@ -651,6 +653,15 @@ var chatSend = document.getElementById("chat-send");
 var chatPlus = document.getElementById("chat-plus"), chatMenu = document.getElementById("chat-menu");
 var chatFile = document.getElementById("chat-file"), chatCam = document.getElementById("chat-cam");
 var att = document.getElementById("chat-att"), attImg = null;
+var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
+function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
+function syncV() {
+document.querySelectorAll("[data-vmodel]").forEach(function (e) { e.value = vModel; });
+document.querySelectorAll("[data-vdur]").forEach(function (e) { e.value = vDur; e.disabled = vModel === "grok"; });
+}
+document.querySelectorAll("[data-vmodel]").forEach(function (e) { e.addEventListener("change", function () { vModel = e.value; localStorage.setItem("fl_vm", vModel); syncV(); }); });
+document.querySelectorAll("[data-vdur]").forEach(function (e) { e.addEventListener("change", function () { vDur = e.value; localStorage.setItem("fl_vd", vDur); syncV(); }); });
+syncV();
 var modeBar = document.getElementById("chat-mode"), mode = "chat", gRatio = "9:16";
 var MODES = { video: { tag: "Видео", ph: "Опиши видео…", r: "9:16" }, image: { tag: "Картинка", ph: "Опиши картинку…", r: "1:1" } };
 function setMode(m) {
@@ -659,6 +670,7 @@ modeBar.hidden = mode === "chat";
 chatIn.placeholder = mode === "chat" ? "Спроси FLast…" : MODES[mode].ph;
 if (mode !== "chat") {
 document.getElementById("chat-mtag").textContent = MODES[mode].tag;
+document.getElementById("chat-vopt").hidden = mode !== "video";
 gRatio = MODES[mode].r;
 modeBar.querySelectorAll("[data-r]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-r") === gRatio ? "true" : "false"); });
 modeBar.classList.remove("x-att--in"); void modeBar.offsetWidth; modeBar.classList.add("x-att--in");
@@ -826,12 +838,12 @@ if (kind === "image" && !text) { chatErr.textContent = "Опиши картин�
 chatIn.value = ""; setAtt(null); setMode("chat");
 addUser((kind === "video" ? "Видео: " : "Картинка: ") + (text || "оживи это фото"), img);
 var r = row("bot"), b = r.lastChild; r.classList.add("x-m--typing");
-b.innerHTML = '<div class="x-gen"><p class="x-gtitle">' + (kind === "video" ? "Снимаю видео" : "Рисую картинку") + '</p><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">Отправляю запрос…</span><b>0%</b></p></div>';
+b.innerHTML = '<div class="x-gen"><p class="x-gtitle">' + (kind === "video" ? "Снимаю видео · " + (vModel === "grok" ? "Grok" : "Seedance")  : "Рисую картинку") + '</p><div class="x-bar"><i></i></div><p class="x-progline"><span class="x-note">Отправляю запрос…</span><b>0%</b></p></div>';
 msgs.appendChild(r); scrollEnd(true);
 var bar = b.querySelector(".x-bar i"), note = b.querySelector(".x-note"), pct = b.querySelector(".x-progline b");
 function prog(p, t) { var v = Math.max(0, Math.min(100, Math.round(Number(p) || 0))); bar.style.width = v + "%"; pct.textContent = v + "%"; if (t) note.textContent = t; }
 function fail(t) { r.classList.remove("x-m--typing"); b.innerHTML = ""; var p = document.createElement("p"); p.className = "x-gerr"; p.textContent = t; b.appendChild(p); }
-var body = { prompt: text, ratio: ratio }; if (img) body.image = img;
+var body = { prompt: text, ratio: ratio }; if (img) body.image = img; if (kind === "video") vOpt(body);
 call("POST", kind === "video" ? "/api/video" : "/api/image", body).then(function (res) {
 if (!(res.ok && res.data && res.data.job != null)) return fail(errText(res, "Не удалось запустить генерацию."));
 var id = res.data.job; prog(2, "В очереди…");
@@ -994,6 +1006,7 @@ result.hidden = true;
 prog.hidden = false; progress(0, "Отправляю запрос…");
 var body = { prompt: prompt, ratio: ratio };
 if (image) body.image = image;
+if (isVideo) vOpt(body);
 call("POST", isVideo ? "/api/video" : "/api/image", body).then(function (res) {
 if (res.ok && res.data && res.data.job != null) { progress(0, "В очереди…"); poll(res.data.job, 0); }
 else finish(errText(res, "Не удалось запустить генерацию, попробуй ещё раз."));
