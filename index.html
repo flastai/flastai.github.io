@@ -484,6 +484,8 @@
         /* ---------- Application ---------- */
         var reqId = null;
         try { reqId = localStorage.getItem("flast_req"); } catch (e) {}
+        var rm = location.hash.match(/[#&]r=([^&]+)/);
+        if (rm) { reqId = decodeURIComponent(rm[1]); try { localStorage.setItem("flast_req", reqId); } catch (e) {} }
         var hint = document.getElementById("hint");
         function showDone() {
           stepForm.hidden = true; stepDone.hidden = false;
@@ -611,7 +613,25 @@
         setGuest();
         var cfg = fetch("config.json", { cache: "no-store" })
           .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-          .then(function (c) { if (!c || !c.api) throw 0; api = String(c.api).replace(/\/+$/, ""); return true; })
+          .then(function (c) {
+            if (!c || !c.api) throw 0;
+            api = String(c.api).replace(/\/+$/, "");
+            if (c.mirror && location.protocol === "https:") {
+              var ctl = window.AbortController ? new AbortController() : null;
+              var tm = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+              return fetch(api + "/api/ping", { headers: { "ngrok-skip-browser-warning": "1" }, signal: ctl ? ctl.signal : undefined })
+                .then(function (r) { clearTimeout(tm); if (!r.ok) throw 0; return r.json(); })
+                .then(function (d) { if (!d || !d.ok) throw 0; return true; })
+                .catch(function () {
+                  var h = [];
+                  if (key) h.push("k=" + encodeURIComponent(key));
+                  if (reqId) h.push("r=" + encodeURIComponent(reqId));
+                  location.replace(String(c.mirror).replace(/\/+$/, "") + "/" + (h.length ? "#" + h.join("&") : ""));
+                  return new Promise(function () {});
+                });
+            }
+            return true;
+          })
           .catch(function () { api = null; return false; });
         if (!key && reqId) { setPending(); cfg.then(function (ok) { if (ok) pollReq(); }); }
         if (key) {
