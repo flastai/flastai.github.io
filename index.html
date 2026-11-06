@@ -485,7 +485,7 @@ btn.classList.toggle("x-svc--off", svcOff);
 document.getElementById("svc-msg").textContent = svcOff ? "Сейчас сервис выключен для всех, кроме тебя." : "";
 document.getElementById("svc-ban").hidden = !(svcOff && !me.admin);
 }
-function setMe(d) { if ("service_off" in d) { svcOff = !!d.service_off; setTimeout(drawSvc, 0); } me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); }
+function setMe(d) { if ("service_off" in d) { svcOff = !!d.service_off; setTimeout(drawSvc, 0); } me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); vAdm(me.admin); }
 function avaHTML(url, label) {
 if (url) { var c = avaCache[url]; return c && c.u ? '<img src="' + c.u + '" alt="" />' : '<img data-ava="' + esc(url) + '" alt="" />'; }
 return '<i>' + esc(((label || "?").trim()[0] || "?").toUpperCase()) + "</i>";
@@ -694,10 +694,24 @@ var chatFile = document.getElementById("chat-file"), chatCam = document.getEleme
 var att = document.getElementById("chat-att"), attImg = null;
 var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
 function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
-var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine" };
+var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук" };
+function vAdm(on) {
+document.querySelectorAll("[data-vmodel]").forEach(function (e) {
+var o = e.querySelector('option[value="sd25"]');
+if (on && !o) { o = document.createElement("option"); o.value = "sd25"; o.textContent = "Seedance 2.5 · звук ★"; e.insertBefore(o, e.firstChild); }
+if (!on && o) o.remove();
+});
+if (!on && vModel === "sd25") { vModel = "sd-fast"; localStorage.setItem("fl_vm", vModel); }
+syncV();
+}
 function syncV() {
+var mx = vModel === "sd25" ? 30 : 15;
+if (Number(vDur) > mx) vDur = String(mx);
+document.querySelectorAll("[data-vdur]").forEach(function (e) {
+if (e.options.length !== mx - 3) { e.innerHTML = ""; for (var d = 4; d <= mx; d++) { var o = document.createElement("option"); o.value = String(d); o.textContent = d + " сек"; e.appendChild(o); } }
+});
 var vi = document.getElementById("v-info");
-if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · 720p · " + VNAMES[vModel];
+if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · " + (vModel === "sd25" ? "480p" : "720p") + " · " + VNAMES[vModel];
 document.querySelectorAll("[data-vmodel]").forEach(function (e) { e.value = vModel; });
 document.querySelectorAll("[data-vdur]").forEach(function (e) { e.value = vDur; e.disabled = vModel === "grok"; });
 }
