@@ -694,21 +694,19 @@ var chatFile = document.getElementById("chat-file"), chatCam = document.getEleme
 var att = document.getElementById("chat-att"), attImg = null;
 var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
 function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
-var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук" };
+var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук", "omni": "Gemini Omni · звук" };
 function vAdm(on) {
 document.querySelectorAll("[data-vmodel]").forEach(function (e) {
 var o = e.querySelector('option[value="sd25"]');
-if (on && !o) { o = document.createElement("option"); o.value = "sd25"; o.textContent = "Seedance 2.5 · звук ★"; e.insertBefore(o, e.firstChild); }
-if (!on && o) o.remove();
+if (!o) { [["omni", "Gemini Omni · звук ★"], ["sd25", "Seedance 2.5 · звук ★"]].forEach(function (x) { var n = document.createElement("option"); n.value = x[0]; n.textContent = x[1]; e.insertBefore(n, e.firstChild); }); }
 });
-if (!on && vModel === "sd25") { vModel = "sd-fast"; localStorage.setItem("fl_vm", vModel); }
 syncV();
 }
 function syncV() {
-var mx = vModel === "sd25" ? 30 : 15;
-if (Number(vDur) > mx) vDur = String(mx);
+var mn = vModel === "omni" ? 3 : 4, mx = vModel === "sd25" ? 30 : vModel === "omni" ? 10 : 15;
+if (Number(vDur) > mx) vDur = String(mx); if (Number(vDur) < mn) vDur = String(mn);
 document.querySelectorAll("[data-vdur]").forEach(function (e) {
-if (e.options.length !== mx - 3) { e.innerHTML = ""; for (var d = 4; d <= mx; d++) { var o = document.createElement("option"); o.value = String(d); o.textContent = d + " сек"; e.appendChild(o); } }
+if (e.options.length !== mx - mn + 1 || e.options[0].value !== String(mn)) { e.innerHTML = ""; for (var d = mn; d <= mx; d++) { var o = document.createElement("option"); o.value = String(d); o.textContent = d + " сек"; e.appendChild(o); } }
 });
 var vi = document.getElementById("v-info");
 if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · " + (vModel === "sd25" ? "480p" : "720p") + " · " + VNAMES[vModel];
