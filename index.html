@@ -81,6 +81,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <button type="button" class="x-mx" id="chat-mx" aria-label="Обычный чат">×</button>
 <div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div>
 </div>
+<div id="chat-cmod" style="margin:0 0 8px 2px"><select class="x-sel" id="chat-model" aria-label="Модель чата" style="min-height:32px;font-size:12px"><option value="fable-5-1">Fable 5.1</option><option value="fable-5">Fable 5</option><option value="sonnet-5-5">Sonnet 5.5</option><option value="haiku-5-5">Haiku 5.5</option></select></div>
 <div class="x-att" id="chat-att" hidden><img alt="Приложенное фото" /><button type="button" class="x-attx" aria-label="Убрать фото">×</button></div>
 <div class="x-crow2">
 <button class="x-cicon" type="button" id="chat-plus" aria-label="Добавить" aria-haspopup="menu" aria-expanded="false" aria-controls="chat-menu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
@@ -485,7 +486,7 @@ btn.classList.toggle("x-svc--off", svcOff);
 document.getElementById("svc-msg").textContent = svcOff ? "Сейчас сервис выключен для всех, кроме тебя." : "";
 document.getElementById("svc-ban").hidden = !(svcOff && !me.admin);
 }
-function setMe(d) { if ("service_off" in d) { svcOff = !!d.service_off; setTimeout(drawSvc, 0); } me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); vAdm(me.admin); }
+function setMe(d) { if ("service_off" in d) { svcOff = !!d.service_off; setTimeout(drawSvc, 0); } me.name = d.name || me.name; me.nick = d.nick || ""; me.verified = !!d.verified; me.ava = d.ava || ""; me.admin = !!d.admin; drawMe(); if ("paid_video" in d) vAdm(!!d.paid_video); }
 function avaHTML(url, label) {
 if (url) { var c = avaCache[url]; return c && c.u ? '<img src="' + c.u + '" alt="" />' : '<img data-ava="' + esc(url) + '" alt="" />'; }
 return '<i>' + esc(((label || "?").trim()[0] || "?").toUpperCase()) + "</i>";
@@ -692,14 +693,17 @@ var chatSend = document.getElementById("chat-send");
 var chatPlus = document.getElementById("chat-plus"), chatMenu = document.getElementById("chat-menu");
 var chatFile = document.getElementById("chat-file"), chatCam = document.getElementById("chat-cam");
 var att = document.getElementById("chat-att"), attImg = null;
+var cModel = localStorage.getItem("fl_cm") || "sonnet-5-5"; (function () { var cs = document.getElementById("chat-model"); cs.value = cModel; if (cs.value !== cModel) { cModel = "sonnet-5-5"; cs.value = cModel; } cs.addEventListener("change", function () { cModel = cs.value; localStorage.setItem("fl_cm", cModel); }); })();
 var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
 function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
 var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук", "omni": "Gemini Omni · звук" };
 function vAdm(on) {
 document.querySelectorAll("[data-vmodel]").forEach(function (e) {
 var o = e.querySelector('option[value="sd25"]');
+if (!on) { e.querySelectorAll('option[value="sd25"],option[value="omni"]').forEach(function (x) { x.remove(); }); return; }
 if (!o) { [["omni", "Gemini Omni · звук ★"], ["sd25", "Seedance 2.5 · звук ★"]].forEach(function (x) { var n = document.createElement("option"); n.value = x[0]; n.textContent = x[1]; e.insertBefore(n, e.firstChild); }); }
 });
+if (!on && (vModel === "sd25" || vModel === "omni")) { vModel = "sd-fast"; localStorage.setItem("fl_vm", vModel); }
 syncV();
 }
 function syncV() {
@@ -721,10 +725,12 @@ var MODES = { video: { tag: "Видео", ph: "Опиши видео…", r: "9:
 function setMode(m) {
 mode = MODES[m] ? m : "chat";
 modeBar.hidden = mode === "chat";
+document.getElementById("chat-cmod").hidden = mode !== "chat";
 chatIn.placeholder = mode === "chat" ? "Спроси FLast…" : MODES[mode].ph;
 if (mode !== "chat") {
 document.getElementById("chat-mtag").textContent = MODES[mode].tag;
 document.getElementById("chat-vopt").hidden = mode !== "video";
+document.getElementById("chat-cmod").hidden = mode !== "chat";
 gRatio = MODES[mode].r;
 modeBar.querySelectorAll("[data-r]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-r") === gRatio ? "true" : "false"); });
 modeBar.classList.remove("x-att--in"); void modeBar.offsetWidth; modeBar.classList.add("x-att--in");
@@ -840,7 +846,7 @@ chatIn.value = ""; setAtt(null);
 var ur = addUser(text, img);
 var tr = addTyping();
 busy = true; chatSend.disabled = true;
-call("POST", "/api/chat", { messages: payload() }).then(function (res) {
+call("POST", "/api/chat", { messages: payload(), model: cModel }).then(function (res) {
 busy = false; chatSend.disabled = false;
 if (res.ok && res.data && typeof res.data.reply === "string") {
 history_.push({ role: "assistant", content: res.data.reply });
