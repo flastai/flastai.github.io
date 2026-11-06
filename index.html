@@ -79,7 +79,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <span class="x-mtag" id="chat-mtag"></span>
 <div class="x-rat" id="chat-rat" role="group" aria-label="Формат"><button type="button" data-r="9:16" aria-pressed="true">9:16</button><button type="button" data-r="16:9" aria-pressed="false">16:9</button><button type="button" data-r="1:1" aria-pressed="false">1:1</button></div>
 <button type="button" class="x-mx" id="chat-mx" aria-label="Обычный чат">×</button>
-<div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div>
+<div class="x-vopt" id="chat-vopt" hidden><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="fa">Оживить фото · бесплатно</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div>
 </div>
 <div id="chat-cmod" style="margin:0 0 8px 2px"><select class="x-sel" id="chat-model" aria-label="Модель чата" style="min-height:32px;font-size:12px"><option value="fable-5-1">Fable 5.1</option><option value="fable-5">Fable 5</option><option value="sonnet-5-5">Sonnet 5.5</option><option value="haiku-5-5">Haiku 5.5</option></select></div>
 <div class="x-att" id="chat-att" hidden><img alt="Приложенное фото" /><button type="button" class="x-attx" aria-label="Убрать фото">×</button></div>
@@ -94,7 +94,7 @@ href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&
 <div class="x-panel" id="p-video" role="tabpanel" aria-labelledby="tab-video" hidden>
 <form class="x-form" data-gen="video" novalidate>
 <label class="x-field"><span>Опиши видео</span><textarea name="prompt" rows="4" placeholder="Например: кот в очках едет на скейте по ночному городу"></textarea></label>
-<div class="x-field"><span>Модель и длительность</span><div class="x-vopt"><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div></div>
+<div class="x-field"><span>Модель и длительность</span><div class="x-vopt"><select class="x-sel" data-vmodel aria-label="Модель видео"><option value="sd-fast">Seedance 2.0 Fast</option><option value="fa">Оживить фото · бесплатно</option><option value="sd-mini">Seedance 2.0 Mini</option><option value="sd">Seedance 2.0</option><option value="grok">Grok</option></select><select class="x-sel" data-vdur aria-label="Длительность"><option value="4">4 сек</option><option value="5">5 сек</option><option value="6">6 сек</option><option value="7">7 сек</option><option value="8">8 сек</option><option value="9">9 сек</option><option value="10">10 сек</option><option value="11">11 сек</option><option value="12">12 сек</option><option value="13">13 сек</option><option value="14">14 сек</option><option value="15">15 сек</option></select></div></div>
 <div class="x-field"><span>Формат</span>
 <div class="x-chips" role="group" aria-label="Соотношение сторон">
 <button class="x-chip" type="button" data-ratio="9:16" aria-pressed="true">9:16</button>
@@ -696,7 +696,7 @@ var att = document.getElementById("chat-att"), attImg = null;
 var cModel = localStorage.getItem("fl_cm") || "sonnet-5-5"; (function () { var cs = document.getElementById("chat-model"); cs.value = cModel; if (cs.value !== cModel) { cModel = "sonnet-5-5"; cs.value = cModel; } cs.addEventListener("change", function () { cModel = cs.value; localStorage.setItem("fl_cm", cModel); }); })();
 var vModel = localStorage.getItem("fl_vm") || "sd-fast", vDur = localStorage.getItem("fl_vd") || "5";
 function vOpt(body) { body.model = vModel; if (vModel !== "grok") body.dur = Number(vDur); return body; }
-var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук", "omni": "Gemini Omni · звук" };
+var VNAMES = { "sd-fast": "Seedance 2.0 Fast", "sd-mini": "Seedance 2.0 Mini", "sd": "Seedance 2.0", "grok": "Grok Imagine", "sd25": "Seedance 2.5 · звук", "omni": "Gemini Omni · звук", "fa": "Оживить фото" };
 function vAdm(on) {
 document.querySelectorAll("[data-vmodel]").forEach(function (e) {
 var o = e.querySelector('option[value="sd25"]');
@@ -707,13 +707,14 @@ if (!on && (vModel === "sd25" || vModel === "omni")) { vModel = "sd-fast"; local
 syncV();
 }
 function syncV() {
-var mn = vModel === "omni" ? 3 : 4, mx = vModel === "sd25" ? 30 : vModel === "omni" ? 10 : 15;
+var mn = vModel === "omni" ? 3 : vModel === "fa" ? 5 : 4, mx = vModel === "sd25" ? 30 : vModel === "omni" ? 10 : vModel === "fa" ? 20 : 15, st = vModel === "fa" ? 5 : 1;
 if (Number(vDur) > mx) vDur = String(mx); if (Number(vDur) < mn) vDur = String(mn);
+if (st > 1) vDur = String(Math.round(Number(vDur) / st) * st);
 document.querySelectorAll("[data-vdur]").forEach(function (e) {
-if (e.options.length !== mx - mn + 1 || e.options[0].value !== String(mn)) { e.innerHTML = ""; for (var d = mn; d <= mx; d++) { var o = document.createElement("option"); o.value = String(d); o.textContent = d + " сек"; e.appendChild(o); } }
+if (e.options.length !== Math.floor((mx - mn) / st) + 1 || e.options[0].value !== String(mn)) { e.innerHTML = ""; for (var d = mn; d <= mx; d += st) { var o = document.createElement("option"); o.value = String(d); o.textContent = d + " сек"; e.appendChild(o); } }
 });
 var vi = document.getElementById("v-info");
-if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · " + (vModel === "sd25" ? "480p" : "720p") + " · " + VNAMES[vModel];
+if (vi) vi.textContent = (vModel === "grok" ? "6" : vDur) + " сек · " + (vModel === "sd25" ? "480p" : vModel === "fa" ? "из твоего фото" : "720p") + " · " + VNAMES[vModel];
 document.querySelectorAll("[data-vmodel]").forEach(function (e) { e.value = vModel; });
 document.querySelectorAll("[data-vdur]").forEach(function (e) { e.value = vDur; e.disabled = vModel === "grok"; });
 }
@@ -895,6 +896,7 @@ chatCam.addEventListener("change", function () { onPick(chatCam); });
 function sendGen(text) {
 var kind = mode, img = attImg, ratio = gRatio;
 if (kind === "image" && !text) { chatErr.textContent = "Опиши картинку."; chatIn.focus(); return; }
+if (kind === "video" && vModel === "fa" && !img) { chatErr.textContent = "Для «Оживить фото» прикрепи своё фото."; return; }
 chatIn.value = ""; setAtt(null); setMode("chat");
 addUser((kind === "video" ? "Видео: " : "Картинка: ") + (text || "оживи это фото"), img);
 var r = row("bot"), b = r.lastChild; r.classList.add("x-m--typing");
@@ -1060,6 +1062,7 @@ if (btn.disabled) return;
 var prompt = gf.elements.prompt.value.trim();
 if (!prompt && !image) { gErr.textContent = isVideo ? "Опиши видео или добавь фото." : "Опиши фото."; gf.elements.prompt.focus(); return; }
 if (!prompt && !isVideo) { gErr.textContent = "Опиши фото."; gf.elements.prompt.focus(); return; }
+if (isVideo && vModel === "fa" && !image) { gErr.textContent = "Для «Оживить фото» добавь своё фото."; return; }
 gErr.textContent = "";
 btn.disabled = true;
 result.hidden = true;
